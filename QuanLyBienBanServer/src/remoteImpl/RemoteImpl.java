@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import entity.User;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -237,7 +238,7 @@ public class RemoteImpl implements RemoteInterface {
                 list.add(meeting);
         }
         rs.close();
-        GUIServer.jTextArea1.append("Load user list done! \n");
+        GUIServer.jTextArea1.append("Load meeting list done! \n");
         return list;
         } catch (SQLException ex) {
             Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -385,5 +386,64 @@ public class RemoteImpl implements RemoteInterface {
         }
         return 0;
     }
+    
+    @Override
+    public List<ReportPart> getReportParts(int i, int y) throws RemoteException {
+        final int PERSONCONTENT = 0, CONTENTTIME=1;
+        GUIServer.jTextArea1.append("Load reportpart list . . .\n");
+        List<ReportPart> list = new ArrayList<>();
+        Connection conn = ConnectDB.connectDB();
+        PreparedStatement stmt;
+        System.out.println("Creating statement...");
+        String sql = "select * from reportparts where type = ? and meetingId = ?";
+        ResultSet rs;
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, i);
+            stmt.setInt(2, y);
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+                // Retrieve by column name
+                int id  = rs.getInt("id");
+                int meetingId = y;
+                String fileName = rs.getString("fileName");
+                int type = i;
+                String reportPartContent = rs.getString("reportPartContent");
+                // Setting the values
+                ReportPart reportPart = new ReportPart();
+                reportPart.setId(id);
+                reportPart.setMeetingId(meetingId);
+                reportPart.setType(type);
+                reportPart.setFileName(fileName);
+                list.add(reportPart);
+        }
+        rs.close();
+        GUIServer.jTextArea1.append("Load reportpart list done! \n");
+        return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
     // end Remote Implement for file
+
+    public String getReportPartContent(int reportPartId) throws RemoteException{
+        Connection conn = ConnectDB.connectDB();
+        PreparedStatement stmt = null;
+        String sql = "select * from reportparts where id = ?";
+        String out="";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, reportPartId);
+            System.out.println(stmt);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                out = rs.getString("reportPartContent");
+                return out;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return out;
+    }
 }

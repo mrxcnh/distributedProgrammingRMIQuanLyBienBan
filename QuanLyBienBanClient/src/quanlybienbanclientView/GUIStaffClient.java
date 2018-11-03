@@ -94,6 +94,7 @@ public class GUIStaffClient extends javax.swing.JFrame {
         generateReportButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("You are logging in as staff");
 
@@ -300,22 +301,27 @@ public class GUIStaffClient extends javax.swing.JFrame {
         int result = jfc.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = jfc.getSelectedFile();
-            this.fileNameTextField.setText(selectedFile.getAbsolutePath());
-            System.out.println("Selected file: "+selectedFile.getAbsolutePath());
-            BufferedInputStream bufferedStream;
-            try {
-                bufferedStream = new BufferedInputStream(new FileInputStream(selectedFile));
-                int nextByte;
-                StringBuffer localBuffer = new StringBuffer();
-                while( -1 != (nextByte = bufferedStream.read())) {
-                    char nextChar = (char) nextByte;
-                    localBuffer.append(nextChar);
+            if("txt".equals(selectedFile.getName().substring(selectedFile.getName().length()-3))){
+                this.jTextArea1.setText("");
+                this.fileNameTextField.setText(selectedFile.getAbsolutePath());
+                System.out.println("Selected file: "+selectedFile.getAbsolutePath());
+                BufferedInputStream bufferedStream;
+                try {
+                    bufferedStream = new BufferedInputStream(new FileInputStream(selectedFile));
+                    int nextByte;
+                    StringBuffer localBuffer = new StringBuffer();
+                    while( -1 != (nextByte = bufferedStream.read())) {
+                        char nextChar = (char) nextByte;
+                        localBuffer.append(nextChar);
+                    }
+                    this.jTextArea1.append(localBuffer.toString());
+                }catch (FileNotFoundException ex) {
+                    Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                this.jTextArea1.append(localBuffer.toString());
-            }catch (FileNotFoundException ex) {
-                Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "You must input a .txt file!");
             }
         }
     }//GEN-LAST:event_chooseButtonActionPerformed
@@ -337,6 +343,8 @@ public class GUIStaffClient extends javax.swing.JFrame {
             int i = reportPartController.uploadFile(reportPart);
             if( i > 0 ){
                 JOptionPane.showMessageDialog(rootPane, "Success!");
+                this.jTextArea1.setText("");
+                this.fileNameTextField.setText("");
             }
             else
                 JOptionPane.showMessageDialog(rootPane, "Failed! Try again!");
@@ -368,7 +376,9 @@ public class GUIStaffClient extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void generateReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateReportButtonActionPerformed
-        
+        GenerateReport.meetingId = Integer.parseInt(this.meetingIdTF.getText().substring(3));
+        GenerateReport generateReport = new GenerateReport();
+        generateReport.setVisible(true);
     }//GEN-LAST:event_generateReportButtonActionPerformed
 
     /**

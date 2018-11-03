@@ -6,6 +6,7 @@
 package quanlybienbanclientController;
 
 import entity.ReportPart;
+import java.util.List;
 import quanlybienbanclientModel.ReportPartModel;
 
 /**
@@ -22,4 +23,14 @@ public class ReportPartController {
     public int uploadFile(ReportPart reportPart){
         return reportPartModel.uploadFile(reportPart);
     }
+    
+    public List<ReportPart> getReportPartIds(int i, int y){
+        return reportPartModel.getReportPartIds(i, y);
+    }
+    
+    public String getReportPartContent(int reportPartId){
+        return reportPartModel.getReportPartContent(reportPartId);
+    }
+    
+    
 }

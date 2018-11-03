@@ -49,6 +49,7 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,7 +152,10 @@ public class LoginForm extends javax.swing.JFrame {
         else
         {
             user = userController.getUser(username.getText(), password.getText());
-            if(user.getId() == 0){
+            if(user == null){
+                JOptionPane.showMessageDialog(rootPane, "Đã có lỗi xảy ra");
+            }
+            else if(user.getId() == 0){
                 JOptionPane.showMessageDialog(rootPane, "Wrong username or password");
                 this.username.setText("");
                 this.password.setText("");

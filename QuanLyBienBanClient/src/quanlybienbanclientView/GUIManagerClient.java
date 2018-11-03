@@ -38,7 +38,7 @@ public class GUIManagerClient extends javax.swing.JFrame {
         model.setColumnIdentifiers(column);
         try {
             for (Meeting u : list ){
-                Object[] row = {u.getId(), u.getTitle(), u.getDate(), u.getTimeStart()};
+                Object[] row = {"MID"+u.getId(), u.getTitle(), u.getDate(), u.getTimeStart()};
                 model.addRow(row);
             }
             GUIManagerClient.jTable1.setModel(model);
@@ -85,6 +85,7 @@ public class GUIManagerClient extends javax.swing.JFrame {
         deleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         welcomeLabel.setText("You are loggin in as Manager");
 

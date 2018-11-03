@@ -44,6 +44,7 @@ public interface RemoteInterface extends Remote{
     
     //interface for filetext
     public int uploadFile(ReportPart reportPart) throws RemoteException;
-    
+    public List<ReportPart> getReportParts(int type, int meetingId) throws RemoteException;
+    public String getReportPartContent(int reportPartId) throws RemoteException;
     //end interface for filetext
 }
