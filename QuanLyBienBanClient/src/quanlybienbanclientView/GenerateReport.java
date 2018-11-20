@@ -5,8 +5,17 @@
  */
 package quanlybienbanclientView;
 
+import entity.ContentTime;
+import entity.Meeting;
+import entity.PersonContent;
+import entity.PersonContentTime;
+import entity.Report;
 import entity.ReportPart;
+import entity.User;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+import quanlybienbanclientController.ReportController;
 import quanlybienbanclientController.ReportPartController;
 
 /**
@@ -15,16 +24,19 @@ import quanlybienbanclientController.ReportPartController;
  */
 public class GenerateReport extends javax.swing.JFrame {
     final int PERSONCONTENT=0, CONTENTTIME=1;
-    public static int meetingId;
+    public static Meeting meeting;
+    public static User user;
     private ReportPartController reportPartController;
+    private ReportController reportController;
     /**
      * Creates new form GenerateReport
      */
     public GenerateReport() {
         reportPartController = new ReportPartController();
+        reportController = new ReportController();
         initComponents();
-        List<ReportPart> reportPartPersonContents = reportPartController.getReportPartIds(PERSONCONTENT, GenerateReport.meetingId);
-        List<ReportPart> reportPartContentTimes = reportPartController.getReportPartIds(CONTENTTIME, GenerateReport.meetingId);
+        List<ReportPart> reportPartPersonContents = reportPartController.getReportPartIds(PERSONCONTENT, GenerateReport.meeting.getId());
+        List<ReportPart> reportPartContentTimes = reportPartController.getReportPartIds(CONTENTTIME, GenerateReport.meeting.getId());
         for(ReportPart rp : reportPartPersonContents){
             this.jComboBox1.addItem(rp.getId()+ " - " + rp.getFileName());
         }
@@ -48,19 +60,20 @@ public class GenerateReport extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        generateReportButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        personContentPartTextArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        contentTimePartTextArea = new javax.swing.JTextArea();
+        reportNameTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        jLabel1.setText("Generate Report");
+        jLabel1.setText("Report Name");
 
         jLabel2.setText("Choose the Person-Content file");
 
@@ -83,21 +96,31 @@ public class GenerateReport extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Generate Report");
+        generateReportButton.setText("Generate Report");
+        generateReportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateReportButtonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Cancel");
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Preview PC file");
 
         jLabel5.setText("Preview CT file");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        personContentPartTextArea.setColumns(20);
+        personContentPartTextArea.setRows(5);
+        jScrollPane1.setViewportView(personContentPartTextArea);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        contentTimePartTextArea.setColumns(20);
+        contentTimePartTextArea.setRows(5);
+        jScrollPane2.setViewportView(contentTimePartTextArea);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -110,19 +133,20 @@ public class GenerateReport extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(generateReportButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(reportNameTextField)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
@@ -130,7 +154,9 @@ public class GenerateReport extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reportNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -149,8 +175,8 @@ public class GenerateReport extends javax.swing.JFrame {
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(generateReportButton)
+                    .addComponent(cancelButton))
                 .addContainerGap())
         );
 
@@ -166,6 +192,7 @@ public class GenerateReport extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -174,17 +201,113 @@ public class GenerateReport extends javax.swing.JFrame {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         Object item = evt.getItem();
-        int reportPartId = Integer.parseInt(item.toString().substring(0, 1));
+        int endIndex = item.toString().indexOf("-");
+        int reportPartId = Integer.parseInt(item.toString().substring(0, endIndex).replaceAll(" ", ""));
         String reportPartContent = reportPartController.getReportPartContent(reportPartId);
-        this.jTextArea1.setText(reportPartContent);
+        this.personContentPartTextArea.setText(reportPartContent);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
         Object item = evt.getItem();
-        int reportPartId = Integer.parseInt(item.toString().substring(0, 1));
+        int endIndex = item.toString().indexOf("-");
+        int reportPartId = Integer.parseInt(item.toString().substring(0, endIndex).replaceAll(" ", ""));
         String reportPartContent = reportPartController.getReportPartContent(reportPartId);
-        this.jTextArea2.setText(reportPartContent);
+        this.contentTimePartTextArea.setText(reportPartContent);
     }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void generateReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateReportButtonActionPerformed
+        if(JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "", JOptionPane.YES_NO_OPTION)==0){
+            // get list all person-content in person-contentpart
+            String personContentPart = this.personContentPartTextArea.getText();
+            if("".equals(personContentPart)){
+                JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                return;
+            }
+            String[] linesInPCPart = personContentPart.split("\n");
+            List<PersonContent> personContents = new ArrayList<>();
+            for (String line: linesInPCPart){
+                if (line.length() != 0){
+                    PersonContent personContent = new PersonContent();
+                    String[] parts = line.split("-");
+                    if (parts.length != 2){
+                        JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                        return;
+                    }
+                    personContent.setName(parts[0]);
+                    personContent.setContent(parts[1]);
+                    personContents.add(personContent);
+                }
+            }
+
+            // get list all content-time in content-timepart
+            String contentTimePart = this.contentTimePartTextArea.getText();
+            if("".equals(contentTimePart)){
+                JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                return;
+            }
+            String[] linesInCTPart = contentTimePart.split("\n");
+            List<ContentTime> contentTimes = new ArrayList<>();
+            for (String line: linesInCTPart){
+                if (line.length() != 0){
+                    ContentTime contentTime = new ContentTime();
+                    String[] parts = line.split("\\[");
+                    if (parts.length != 2){
+                        JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                        return;
+                    }
+                    contentTime.setContent(parts[0]);
+                    String[] timeparts = parts[1].split("\\~");
+                    if (timeparts.length != 2){
+                        JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                        return;
+                    }
+                    contentTime.setTimeBegin(timeparts[0]);
+                    contentTime.setTimeEnd(timeparts[1].substring(0, timeparts[1].length()-1));
+                    contentTimes.add(contentTime);
+                }
+            }
+            List<PersonContentTime> personContentTimes = new ArrayList<>();
+            for(PersonContent pc : personContents){
+                PersonContentTime pct = new PersonContentTime();
+                pct.setName(pc.getName());
+                pct.setContent(pc.getContent());
+
+                for(ContentTime ct : contentTimes){
+
+                    if (pct.getContent().equals(ct.getContent())){
+
+                        pct.setTimeBegin(ct.getTimeBegin());
+                        pct.setTimeEnd(ct.getTimeEnd());
+                    }
+                }
+                System.out.println("PCT Object ready: \n PCT person: " + pct.getName() + "\n PCT content: "
+                        + pct.getContent() + "\n PCT time begin: " + pct.getTimeBegin() + "\n PCT time end: "
+                        + pct.getTimeEnd());
+                personContentTimes.add(pct);
+            }
+            Report report = new Report();
+            report.setMeetingId(GenerateReport.meeting.getId());
+            report.setReportName(this.reportNameTextField.getText());
+            report.setPersonContentTimes(personContentTimes);
+            report.setAuthors(GenerateReport.user.getUsername());
+            int result = reportController.generateReport(report, GenerateReport.meeting);
+            if (result == 0){
+                JOptionPane.showMessageDialog(rootPane, "Failed! Try again!");
+                GenerateReport.meeting = null;
+                this.dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Success!");
+                GenerateReport.meeting = null;
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_generateReportButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        GenerateReport.meeting = null;
+        this.dispose();
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,8 +345,9 @@ public class GenerateReport extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JTextArea contentTimePartTextArea;
+    private javax.swing.JButton generateReportButton;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -234,7 +358,7 @@ public class GenerateReport extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea personContentPartTextArea;
+    private javax.swing.JTextField reportNameTextField;
     // End of variables declaration//GEN-END:variables
 }

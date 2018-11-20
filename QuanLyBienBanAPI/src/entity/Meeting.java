@@ -18,10 +18,15 @@ public class Meeting implements Serializable{
     private String title;
     private Date date;
     private Time timeStart;
-
+    private int userCreateId;
     public Meeting() {
     }
     //setter
+
+    public void setUserCreateId(int userCreateId) {
+        this.userCreateId = userCreateId;
+    }
+    
     public void setId(int id) {
         this.id = id;
     }
@@ -39,6 +44,11 @@ public class Meeting implements Serializable{
     }
     //end setter
     //getter
+
+    public int getUserCreateId() {
+        return userCreateId;
+    }
+    
     public int getId() {
         return id;
     }

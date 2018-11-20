@@ -11,7 +11,7 @@ import remoteImpl.RemoteImpl;
  *
  * @author thanhdovan
  */
-public class QuanLyBienBanServer extends RemoteImpl{
+public class QuanLyBienBanServer{
 
     /**
      * @param args the command line arguments

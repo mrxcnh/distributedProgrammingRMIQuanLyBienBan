@@ -6,6 +6,7 @@
 package quanlybienbanclientController;
 
 import entity.Meeting;
+import entity.User;
 import java.util.List;
 import quanlybienbanclientModel.MeetingModel;
 
@@ -38,5 +39,21 @@ public class MeetingController {
     
     public int deleteMeeting(Meeting meeting){
         return meetingModel.deleteMeeting(meeting);
+    }
+    
+    public int addReporter(User user, Meeting meeting){
+        return meetingModel.addReporter(user, meeting);
+    }
+    
+    public List<Integer> getReporterIds(int meetingId){
+        return meetingModel.getReporterIds(meetingId);
+    }
+    
+    public int deleteReporter(User user, Meeting meeting){
+        return meetingModel.deleteReporter(user, meeting);
+    }
+    
+    public int getMeetingCreatorId(Meeting meeting){
+        return meetingModel.getMeetingCreatorId(meeting);
     }
 }

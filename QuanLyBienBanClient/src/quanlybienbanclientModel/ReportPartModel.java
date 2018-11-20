@@ -21,6 +21,16 @@ import remoteInterface.RemoteInterface;
 public class ReportPartModel {
     private String reportPartContent;
     
+    public int deleteReportPart(int reportPartId){
+        try {
+            RemoteInterface stub = Register.registry();
+            int i = stub.deleteReportPart(reportPartId);
+            return i;
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(ReportPartModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
     public int uploadFile(ReportPart reportPart){
         try {
             RemoteInterface stub = Register.registry();
@@ -64,5 +74,15 @@ public class ReportPartModel {
 
     public void setReportPartContent(String reportPartContent) {
         this.reportPartContent = reportPartContent;
+    }
+    public int deleteReportParts(int meetingId){
+        try{
+            RemoteInterface stub = Register.registry();
+            int i = stub.deleteReportParts(meetingId);
+            return i;
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(ReportPartModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 }

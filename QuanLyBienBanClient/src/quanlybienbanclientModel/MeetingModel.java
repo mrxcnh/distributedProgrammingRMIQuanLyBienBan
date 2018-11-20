@@ -6,6 +6,7 @@
 package quanlybienbanclientModel;
 
 import entity.Meeting;
+import entity.User;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -70,6 +71,48 @@ public class MeetingModel {
         try{
             RemoteInterface stub = Register.registry();
             int i = stub.deleteMeeting(user);
+            return i;
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(MeetingModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
+    public int addReporter(User user, Meeting meeting){
+        try {
+            RemoteInterface stub = Register.registry();
+            int i = stub.addReporter(user, meeting);
+            return i;
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(MeetingModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
+    public List<Integer> getReporterIds(int meetingId){
+        try {
+            RemoteInterface stub = Register.registry();
+            List<Integer> reporterIds = stub.getReporterIds(meetingId);
+            return reporterIds;
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(MeetingModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public int deleteReporter(User user, Meeting meeting){
+        try {
+            RemoteInterface stub = Register.registry();
+            int i = stub.deleteReporter(user, meeting);
+            return i;
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(MeetingModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    public int getMeetingCreatorId(Meeting meeting){
+        try {
+            RemoteInterface stub = Register.registry();
+            int i = stub.getMeetingCreatorId(meeting);
             return i;
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(MeetingModel.class.getName()).log(Level.SEVERE, null, ex);

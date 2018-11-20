@@ -6,15 +6,10 @@
 package quanlybienbanclientView;
 
 import entity.User;
-import java.awt.HeadlessException;
-import java.rmi.NotBoundException;
+import helpfile.EncryptPassword;
 import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import quanlybienbanclientController.UserController;
-import registry.Register;
-import remoteInterface.RemoteInterface;
 
 /**
  *
@@ -26,7 +21,7 @@ public class LoginForm extends javax.swing.JFrame {
     /**
      * Creates new form LoginForm
      */
-    public LoginForm() {
+    public LoginForm(){
         initComponents();
     }
 
@@ -151,12 +146,14 @@ public class LoginForm extends javax.swing.JFrame {
         }
         else
         {
-            user = userController.getUser(username.getText(), password.getText());
+            String passwd = password.getText();
+            String encryptedPasswd = EncryptPassword.getMD5(passwd);
+            user = userController.getUser(username.getText(), encryptedPasswd);
             if(user == null){
-                JOptionPane.showMessageDialog(rootPane, "Đã có lỗi xảy ra");
+                JOptionPane.showMessageDialog(rootPane, "Server is not available!");
             }
             else if(user.getId() == 0){
-                JOptionPane.showMessageDialog(rootPane, "Wrong username or password");
+                JOptionPane.showMessageDialog(rootPane, "Wrong username or password!");
                 this.username.setText("");
                 this.password.setText("");
             }

@@ -1,39 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package remoteInterface;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import helpfile.ConfigFile;
 
 /**
  *
  * @author thanhdovan
  */
 public class ConnectDB {
-    public static Connection connectDB(){
-        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        String DB_URL = "jdbc:mysql://localhost:3306/quanlybienban";
-        String usr = "root";
-        String pass = "Abc@123456";
-        Connection conn = null;        
+    private static final String HOST = ConfigFile.getInstance().get("DBMS_HOST");
+    private static final String PORT = ConfigFile.getInstance().get("DBMS_PORT");
+    private static final String DATABASE = ConfigFile.getInstance().get("DBMS_DATABASE");
+    private static final String USER = ConfigFile.getInstance().get("DBMS_USER");
+    private static final String PASSWORD = ConfigFile.getInstance().get("DBMS_PASSWORD");
+    private static final String DB_URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?zeroDateTimeBehavior=convertToNull&autoReconnect=true&useSSL=false&characterEncoding=utf8"; //Địa chỉ DataBase
+
+    public static Connection connectDB() {
+        Connection conn = null;
         try {
-            Class.forName(JDBC_DRIVER);
+            Class.forName("com.mysql.jdbc.Driver"); ////Đăng kí drive
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
+            return null;
         }
-        System.out.println("Connecting to a selected database..."); 
+        System.out.println("Connecting to a selected database...");
         try {
-            conn = DriverManager.getConnection(DB_URL, usr, pass);
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
         } catch (SQLException ex) {
-            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
+            return null;
         }
-        System.out.println("Connected database successfully...");  
+        System.out.println("Connected database successfully...");
         return conn;
     }
 }

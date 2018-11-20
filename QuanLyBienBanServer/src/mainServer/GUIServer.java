@@ -5,12 +5,11 @@
  */
 package mainServer;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import javax.swing.JOptionPane;
 import remoteImpl.RemoteImpl;
-import remoteInterface.RemoteInterface;
 
 /**
  *
@@ -137,17 +136,15 @@ public class GUIServer extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.jButton1.setVisible(false);
         this.jButton2.setVisible(true);
-        try { 
-            
+        try {
+//            System.setProperty("java.rmi.server.hostname", "192.168.43.212");
             Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT); 
-            RemoteImpl remoteObjUser = new RemoteImpl(); 
-            RemoteInterface stub = (RemoteInterface) UnicastRemoteObject.exportObject(remoteObjUser, 0);  
-            registry.bind("remoteInterface", stub);  
+            RemoteImpl remoteObjUser = new RemoteImpl();
+            registry.rebind("remoteInterface", remoteObjUser);  
             System.err.println("Server ready \n");
             GUIServer.jTextArea1.append("Server ready. \n");
-        } catch (Exception e) { 
+        } catch (RemoteException e) { 
             System.err.println("Server exception: " + e.toString()); 
-            e.printStackTrace();
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
