@@ -751,7 +751,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
                 int meetingId = rs.getInt("meetingId");
                 String reportName = rs.getString("reportName");
                 String reportContent = rs.getString("reportContent");
-                Time timeCreate = rs.getTime("timeCreate");
+                String timeCreate = rs.getString("timeCreate");
                 String authors = rs.getString("authors");
                 report.setId(id);
                 report.setMeetingId(meetingId);
@@ -822,24 +822,18 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
                 String reportName = rs.getString("reportName");
                 String reportContent = rs.getString("reportContent");
                 String time = rs.getString("timeCreate");
-                System.out.println(time);
-                DateFormat formatter = new SimpleDateFormat("HH:mm");
-                Time timeCreate = new java.sql.Time(formatter.parse(time).getTime());
-                System.out.println(timeCreate);
                 String authors = rs.getString("authors");
                 Report report = new Report();
                 report.setId(id);
                 report.setMeetingId(meetingId);
                 report.setReportName(reportName);
-                report.setTimeCreate(timeCreate);
+                report.setTimeCreate(time);
                 report.setAuthors(authors);
                 listReport.add(report);
             }
             conn.close();
             return listReport;
         } catch (SQLException ex) {
-            Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
             Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

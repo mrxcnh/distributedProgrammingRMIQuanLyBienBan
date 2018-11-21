@@ -19,7 +19,7 @@ public class Report implements Serializable{
     private String reportName;
     private List<PersonContentTime> personContentTimes;
     private String reportContent;
-    private Time timeCreate;
+    private String timeCreate;
     private String authors;
 
     public String getAuthors() {
@@ -42,7 +42,7 @@ public class Report implements Serializable{
         this.reportName = reportName;
     }
 
-    public void setTimeCreate(Time timeCreate) {
+    public void setTimeCreate(String timeCreate) {
         this.timeCreate = timeCreate;
     }
 
@@ -50,7 +50,7 @@ public class Report implements Serializable{
         return reportName;
     }
 
-    public Time getTimeCreate() {
+    public String getTimeCreate() {
         return timeCreate;
     }
     public Report() {
