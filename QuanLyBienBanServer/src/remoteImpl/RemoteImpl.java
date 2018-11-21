@@ -718,8 +718,12 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     public int addReport(Report report) throws RemoteException{
         
         String sql = "INSERT INTO reports (meetingId, reportName, reportContent, timeCreate, authors) VALUES (?, ?, ?, ?, ?);";
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String str = sdf.format(new java.util.Date());
+        Calendar cal = new GregorianCalendar();
+        int second = cal.get(Calendar.SECOND);
+        int minute = cal.get(Calendar.MINUTE);
+        int hour = cal.get(Calendar.HOUR);
+
+        String timeCreate = hour + ":"+minute+":"+second;
         try {
             Connection conn = ConnectDB.connectDB();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -727,7 +731,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
             stmt.setString(2, report.getReportName());
             stmt.setString(3, report.getReportContent());
             stmt.setString(5, report.getAuthors());
-            stmt.setString(4, str);
+            stmt.setString(4, timeCreate);
             int i = stmt.executeUpdate();
             conn.close();
             return i;
