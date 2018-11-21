@@ -644,18 +644,11 @@ public class GUIManagerClient extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootPane, "These fields are required");
                     return;
                 }
-                DateFormat formatter = new SimpleDateFormat("HH:mm");
-                Time timeValue = null;
-                try {
-                    timeValue = new java.sql.Time(formatter.parse(timeStart).getTime());
-                } catch (ParseException ex) {
-                    Logger.getLogger(GUIManagerClient.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 Meeting meetingx = new Meeting();
                 meetingx.setId(Integer.parseInt(GUIManagerClient.jTable1.getValueAt(GUIManagerClient.jTable1.getSelectedRow(), 0).toString().substring(3)));
                 meetingx.setTitle(title);
                 meetingx.setDate(sqlDate);
-                meetingx.setTimeStart(timeValue);
+                meetingx.setTimeStart(timeStart);
                 int i = meetingController.editMeeting(meetingx);
                 if (i > 0){
                     JOptionPane.showMessageDialog(rootPane, "Success!");
@@ -682,10 +675,6 @@ public class GUIManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void addMeetingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMeetingButtonActionPerformed
-        if(GUIManagerClient.jTable1.getSelectedRow() == -1){
-            JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
-            return;
-        }
         if(JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "", JOptionPane.YES_NO_OPTION) == 0){
             String title = this.meetingText.getText();
             Calendar cal = this.dateChooserCombo1.getSelectedDate();
@@ -696,17 +685,10 @@ public class GUIManagerClient extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "These fields are required");
                 return;
             }
-            DateFormat formatter = new SimpleDateFormat("HH:mm");
-            Time timeValue = null;
-            try {
-                timeValue = new java.sql.Time(formatter.parse(timeStart).getTime());
-            } catch (ParseException ex) {
-                System.out.println("Time not right!");
-            }
             Meeting meeting = new Meeting();
             meeting.setTitle(title);
             meeting.setDate(sqlDate);
-            meeting.setTimeStart(timeValue);
+            meeting.setTimeStart(timeStart);
             meeting.setUserCreateId(GUIManagerClient.user.getId());
             MeetingController meetingController = new MeetingController();
             int i = meetingController.addMeeting(meeting);

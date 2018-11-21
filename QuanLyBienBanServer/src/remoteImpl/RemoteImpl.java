@@ -378,14 +378,12 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
                 String title = rs.getString("meetingTitle");
                 Date date = rs.getDate("meetingDate");
                 String time = rs.getString("timeStart");
-                DateFormat formatter = new SimpleDateFormat("HH:mm");
-                Time timeValue = new java.sql.Time(formatter.parse(time).getTime());
                 // Setting the values
                 Meeting meeting = new Meeting();
                 meeting.setId(id);
                 meeting.setTitle(title);
                 meeting.setDate(date);
-                meeting.setTimeStart(timeValue);
+                meeting.setTimeStart(time);
                 list.add(meeting);
             }
         rs.close();
@@ -393,8 +391,6 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         GUIServer.jTextArea1.append("Load meeting list done! \n");
         return list;
         } catch (SQLException ex) {
-            Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
             Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
@@ -413,7 +409,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, meeting.getTitle());
             stmt.setDate(2, meeting.getDate());
-            stmt.setString(3, meeting.getTimeStart().toString());
+            stmt.setString(3, meeting.getTimeStart());
             stmt.setInt(4, meeting.getUserCreateId());
             System.out.println(stmt);
             int o = stmt.executeUpdate();
@@ -435,7 +431,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, meeting.getTitle());
             stmt.setDate(2, meeting.getDate());
-            stmt.setString(3, meeting.getTimeStart().toString());
+            stmt.setString(3, meeting.getTimeStart());
             stmt.setInt(4, meeting.getId());
             int i = stmt.executeUpdate();
             GUIServer.jTextArea1.append("Editted meeting "+ meeting.getTitle() +"! \n");
@@ -463,21 +459,17 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
                 int userCreateId = rs.getInt("userCreateId");
                 Date date = rs.getDate("meetingDate");
                 String time = rs.getString("timeStart");
-                DateFormat formatter = new SimpleDateFormat("HH:mm");
-                Time timeValue = new java.sql.Time(formatter.parse(time).getTime());
                 // Setting the values
                 meeting.setId(id);
                 meeting.setUserCreateId(userCreateId);
                 meeting.setTitle(title);
                 meeting.setDate(date);
-                meeting.setTimeStart(timeValue);
+                meeting.setTimeStart(time);
                 
                 conn.close();
                 return meeting;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) { 
             Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return meeting;
@@ -829,8 +821,11 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
                 int id = rs.getInt("id");
                 String reportName = rs.getString("reportName");
                 String reportContent = rs.getString("reportContent");
-                Time timeCreate = rs.getTime("timeCreate");
-                System.out.println(timeCreate.toString());
+                String time = rs.getString("timeCreate");
+                System.out.println(time);
+                DateFormat formatter = new SimpleDateFormat("HH:mm");
+                Time timeCreate = new java.sql.Time(formatter.parse(time).getTime());
+                System.out.println(timeCreate);
                 String authors = rs.getString("authors");
                 Report report = new Report();
                 report.setId(id);
@@ -843,6 +838,8 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
             conn.close();
             return listReport;
         } catch (SQLException ex) {
+            Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

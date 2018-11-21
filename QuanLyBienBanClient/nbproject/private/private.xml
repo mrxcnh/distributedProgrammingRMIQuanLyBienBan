@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/wnncr/NetBeansProjects/QuanLyBienBanClient/src/quanlybienbanclientView/LoginForm.java</file>
-            <file>file:/home/wnncr/NetBeansProjects/QuanLyBienBanClient/src/quanlybienbanclientController/ReportPartController.java</file>
-            <file>file:/home/wnncr/NetBeansProjects/QuanLyBienBanClient/src/quanlybienbanclientController/MeetingController.java</file>
-            <file>file:/home/wnncr/NetBeansProjects/QuanLyBienBanClient/src/quanlybienbanclientView/GUIStaffClient.java</file>
-            <file>file:/home/wnncr/NetBeansProjects/QuanLyBienBanClient/src/quanlybienbanclientModel/ReportPartModel.java</file>
-            <file>file:/home/wnncr/NetBeansProjects/QuanLyBienBanClient/src/quanlybienbanclientView/GUIManagerClient.java</file>
-            <file>file:/home/wnncr/NetBeansProjects/QuanLyBienBanClient/src/quanlybienbanclientModel/UserModel.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIManagerClient.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/LoginForm.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/registry/Register.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIStaffClient.java</file>
         </group>
     </open-files>
 </project-private>

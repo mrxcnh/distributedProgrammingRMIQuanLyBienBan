@@ -137,7 +137,7 @@ public class GUIServer extends javax.swing.JFrame {
         this.jButton1.setVisible(false);
         this.jButton2.setVisible(true);
         try {
-//            System.setProperty("java.rmi.server.hostname", "192.168.43.212");
+            System.setProperty("java.rmi.server.hostname", "192.168.100.8");
             Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT); 
             RemoteImpl remoteObjUser = new RemoteImpl();
             registry.rebind("remoteInterface", remoteObjUser);  
