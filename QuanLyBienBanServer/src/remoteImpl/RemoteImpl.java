@@ -175,10 +175,10 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         }
     }
     @Override
-    public void updateReportContent(String content, int reportId) throws RemoteException {
+    public void updateReportContent(String content, int reportId, int caretOfClientChange, int statusChange) throws RemoteException {
         for (int i = 0; i < reportClients.size() ; i++){
             RemoteReportInterface rr = (RemoteReportInterface)reportClients.elementAt(i);
-            rr.updateReportContent(content, reportId);
+            rr.updateReportContent(content, reportId, caretOfClientChange, statusChange);
         }
     }
     @Override

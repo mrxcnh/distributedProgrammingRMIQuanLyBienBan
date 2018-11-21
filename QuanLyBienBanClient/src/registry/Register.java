@@ -17,7 +17,7 @@ import remoteInterface.RemoteInterface;
  */
 public class Register {
     public static RemoteInterface registry() throws RemoteException, NotBoundException{
-        Registry registry = LocateRegistry.getRegistry("192.168.100.8",Registry.REGISTRY_PORT);
+        Registry registry = LocateRegistry.getRegistry("localhost",Registry.REGISTRY_PORT);
         RemoteInterface stub = (RemoteInterface) registry.lookup("remoteInterface");
         return stub;
     }
