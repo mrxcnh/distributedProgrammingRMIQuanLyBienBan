@@ -1104,6 +1104,9 @@ public class GUIManagerClient extends javax.swing.JFrame {
         public void updateReporterComboBox(int meetingId) throws RemoteException {
             SwingUtilities.invokeLater(new Runnable(){
                 public void run(){
+                    if (GUIManagerClient.this.meetingSelected == null){
+                        return;
+                    }
                     if (GUIManagerClient.this.meetingSelected.getId() == meetingId){
                         System.out.println(GUIManagerClient.this.meetingSelected.getId());
                         GUIManagerClient.selectReporterComboBox.removeAllItems();
@@ -1131,6 +1134,9 @@ public class GUIManagerClient extends javax.swing.JFrame {
         public void updateReporterTable(int meetingId) throws RemoteException {
             SwingUtilities.invokeLater(new Runnable(){
                 public void run(){
+                    if (GUIManagerClient.this.meetingSelected == null){
+                        return;
+                    }
                     if (GUIManagerClient.this.meetingSelected.getId() == meetingId){
                         List<Integer> reporterIds = meetingController.getReporterIds(meetingId);
                         List<User> reporters = new ArrayList<>();
@@ -1149,6 +1155,9 @@ public class GUIManagerClient extends javax.swing.JFrame {
         public void updateUserNotSharedYet(int meetingId) throws RemoteException {
             SwingUtilities.invokeLater(new Runnable(){
                 public void run(){
+                    if (GUIManagerClient.this.meetingSelected == null){
+                        return;
+                    }
                     if (GUIManagerClient.this.meetingSelected.getId() == meetingId){
                         GUIManagerClient.userSharedComboBox.removeAllItems();
                         List<User> users = GUIManagerClient.this.getUserDontHavePermission(GUIManagerClient.this.meetingSelected);
@@ -1161,6 +1170,9 @@ public class GUIManagerClient extends javax.swing.JFrame {
         public void updatePermissionTable(List<User> list, Meeting meeting) throws RemoteException{
             SwingUtilities.invokeLater(new Runnable(){
                 public void run(){
+                    if (GUIManagerClient.this.meetingSelected == null){
+                        return;
+                    }
                     if (GUIManagerClient.this.meetingSelected.getId() == meeting.getId()){
                         GUIManagerClient.updateListPermission(list, meeting);
                     }
