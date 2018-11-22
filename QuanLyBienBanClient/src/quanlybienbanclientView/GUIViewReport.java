@@ -12,11 +12,8 @@ import entity.User;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +40,7 @@ public class GUIViewReport extends javax.swing.JFrame {
     private final UserController userController;
     private RemoteReportImpl remoteReportImpl;
     private String content;
+    private String selectedContent;
     Report reportSelected;
     public static User user;
     public static Meeting meeting;
@@ -366,6 +364,7 @@ public class GUIViewReport extends javax.swing.JFrame {
             this.jLabel5.setText(GUIViewReport.reportTable.getValueAt(row, 0).toString());
             reportSelected = reportController.getReport(reportId);
             String newcontent = reportController.getReportContent(reportId);
+            selectedContent = newcontent;
             content = newcontent;
             GUIViewReport.reportContentTextArea.append(newcontent);
             List<Integer> userIds = reportController.getIdOfUserEdit(reportId);
@@ -438,7 +437,7 @@ public class GUIViewReport extends javax.swing.JFrame {
         this.editReportButton.setEnabled(true);
         this.quitEdittingButton.setEnabled(false);
         String newContent = GUIViewReport.reportContentTextArea.getText();
-        if (newContent.equals(this.content)){
+        if (newContent.equals(this.selectedContent)){
             JOptionPane.showMessageDialog(rootPane, "No change!");
             List<Integer> userIds = reportController.getIdOfUserEdit(reportId);
             List<User> userEdittings = new ArrayList<>();
@@ -504,7 +503,7 @@ public class GUIViewReport extends javax.swing.JFrame {
             System.out.println("Old Caret pos: " + oldCaretPos + " new Caret Pos : "+ this.caretpos);
             System.out.println("Old content length: " + content.length() + " new Content length : "+ newcontent.length());
             if (newcontent.length() - content.length() != 0){
-                int statusChange=newcontent.length() - content.length();
+                int statusChange= newcontent.length() - content.length();
                 content = newcontent;
                 remoteReportImpl.h.updateReportContent(newcontent, reportSelected.getId(), this.caretpos, statusChange);
             }
@@ -577,17 +576,18 @@ public class GUIViewReport extends javax.swing.JFrame {
 
         @Override
         public void updateReportContent(String content, int reportId, int caretOfClientChange, int status) throws RemoteException {
-            SwingUtilities.invokeLater(new Runnable(){
+            SwingUtilities.invokeLater(new Thread(new Runnable(){
                 public void run(){
                     if (GUIViewReport.this.reportSelected.getId() == reportId){
                         if (caretOfClientChange < GUIViewReport.this.caretpos){
+                            System.out.println(status);
                             GUIViewReport.this.caretpos += status;
                         }
                         GUIViewReport.updateReportContent(content);
                         GUIViewReport.reportContentTextArea.setCaretPosition(GUIViewReport.this.caretpos);
                     }
                 }
-            });
+            }));
         }
     
     }

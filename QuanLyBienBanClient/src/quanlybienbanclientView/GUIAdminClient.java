@@ -170,7 +170,7 @@ public class GUIAdminClient extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("You are logging in as Admin ");
+        jLabel3.setText("You are logging in as");
 
         jLabel4.setText("Username");
 

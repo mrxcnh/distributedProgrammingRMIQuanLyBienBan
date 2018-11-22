@@ -6,8 +6,10 @@
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIManagerClient.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/LoginForm.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/registry/Register.java</file>
-            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIStaffClient.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIAdminClient.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIViewReport.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIStaffClient.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GenerateReport.java</file>
         </group>
     </open-files>
 </project-private>

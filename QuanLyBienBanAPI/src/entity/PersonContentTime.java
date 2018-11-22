@@ -70,5 +70,13 @@ public class PersonContentTime implements Serializable, Comparable{
         }
         return 0;
     }
-    
+    @Override
+    public boolean equals(Object obj){
+        try{
+            PersonContentTime pct = (PersonContentTime) obj;
+            return this.name.equals(pct.getName()) && this.content.equals(pct.getContent()) && this.timeBegin.equals(pct.getTimeBegin()) && this.timeEnd.equals(pct.getTimeEnd());
+        }catch(Exception e){
+            return false;
+        }
+    }
 }

@@ -774,15 +774,10 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     }
     @Override
     public int generateReport(Report report, Meeting meeting) throws RemoteException {
-        String reportContent = "Bien Ban Cuoc Hop "+ meeting.getTitle() + "\n\n";
-        reportContent += "Thanh vien tham gia: ";
-        for (PersonContentTime pct: report.getPersonContentTimes()){
-            reportContent += "\n+ "+ pct.getName();
-        }
-        reportContent += "\n\nNoi dung cuoc hop:\n";
+        String reportContent = "";
         Collections.sort(report.getPersonContentTimes());
         for (PersonContentTime pct: report.getPersonContentTimes()){
-            reportContent += "[ "+ pct.getTimeBegin() +" ~ "+ pct.getTimeEnd() +" ] "+pct.getName()+" - "+ pct.getContent() +"\n";
+            reportContent += "["+ pct.getTimeBegin() +"~"+ pct.getTimeEnd() +"]"+pct.getName()+"-"+ pct.getContent() +"\n";
         }
         Calendar cal = new GregorianCalendar();
         int second = cal.get(Calendar.SECOND);

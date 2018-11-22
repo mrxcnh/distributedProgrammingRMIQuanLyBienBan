@@ -7,8 +7,8 @@ package quanlybienbanclientView;
 
 import entity.ContentTime;
 import entity.Meeting;
-import entity.PersonContent;
 import entity.PersonContentTime;
+import entity.PersonTime;
 import entity.Report;
 import entity.ReportPart;
 import entity.User;
@@ -65,7 +65,7 @@ public class GenerateReport extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        personContentPartTextArea = new javax.swing.JTextArea();
+        personTimePartTextArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         contentTimePartTextArea = new javax.swing.JTextArea();
         reportNameTextField = new javax.swing.JTextField();
@@ -75,7 +75,7 @@ public class GenerateReport extends javax.swing.JFrame {
 
         jLabel1.setText("Report Name");
 
-        jLabel2.setText("Choose the Person-Content file");
+        jLabel2.setText("Choose the Person-Time file");
 
         jLabel3.setText("Choose the Content-Time file");
 
@@ -110,13 +110,13 @@ public class GenerateReport extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Preview PC file");
+        jLabel4.setText("Preview PT file");
 
         jLabel5.setText("Preview CT file");
 
-        personContentPartTextArea.setColumns(20);
-        personContentPartTextArea.setRows(5);
-        jScrollPane1.setViewportView(personContentPartTextArea);
+        personTimePartTextArea.setColumns(20);
+        personTimePartTextArea.setRows(5);
+        jScrollPane1.setViewportView(personTimePartTextArea);
 
         contentTimePartTextArea.setColumns(20);
         contentTimePartTextArea.setRows(5);
@@ -204,7 +204,7 @@ public class GenerateReport extends javax.swing.JFrame {
         int endIndex = item.toString().indexOf("-");
         int reportPartId = Integer.parseInt(item.toString().substring(0, endIndex).replaceAll(" ", ""));
         String reportPartContent = reportPartController.getReportPartContent(reportPartId);
-        this.personContentPartTextArea.setText(reportPartContent);
+        this.personTimePartTextArea.setText(reportPartContent);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
@@ -218,24 +218,30 @@ public class GenerateReport extends javax.swing.JFrame {
     private void generateReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateReportButtonActionPerformed
         if(JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "", JOptionPane.YES_NO_OPTION)==0){
             // get list all person-content in person-contentpart
-            String personContentPart = this.personContentPartTextArea.getText();
-            if("".equals(personContentPart)){
+            String personTimePart = this.personTimePartTextArea.getText();
+            if("".equals(personTimePart)){
                 JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
                 return;
             }
-            String[] linesInPCPart = personContentPart.split("\n");
-            List<PersonContent> personContents = new ArrayList<>();
-            for (String line: linesInPCPart){
+            String[] linesInPTPart = personTimePart.split("\n");
+            List<PersonTime> personTimes = new ArrayList<>();
+            for (String line: linesInPTPart){
                 if (line.length() != 0){
-                    PersonContent personContent = new PersonContent();
-                    String[] parts = line.split("-");
+                    PersonTime personTime = new PersonTime();
+                    String[] parts = line.split("\\[");
                     if (parts.length != 2){
                         JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
                         return;
                     }
-                    personContent.setName(parts[0]);
-                    personContent.setContent(parts[1]);
-                    personContents.add(personContent);
+                    personTime.setName(parts[0]);
+                    String[] timeparts = parts[1].split("\\~");
+                    if (timeparts.length != 2){
+                        JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                        return;
+                    }
+                    personTime.setTimeBegin(timeparts[0]);
+                    personTime.setTimeEnd(timeparts[1].substring(0, timeparts[1].length()-1));
+                    personTimes.add(personTime);
                 }
             }
 
@@ -266,25 +272,73 @@ public class GenerateReport extends javax.swing.JFrame {
                     contentTimes.add(contentTime);
                 }
             }
+            if(contentTimes.size() != personTimes.size()){
+                JOptionPane.showMessageDialog(rootPane, "Can not generate! Input have the different number of rows");
+                return;
+            }
             List<PersonContentTime> personContentTimes = new ArrayList<>();
-            for(PersonContent pc : personContents){
+            for(PersonTime pt : personTimes){
                 PersonContentTime pct = new PersonContentTime();
-                pct.setName(pc.getName());
-                pct.setContent(pc.getContent());
-
+                pct.setName(pt.getName());
+                pct.setTimeBegin(pt.getTimeBegin());
+                pct.setTimeEnd(pt.getTimeEnd());
                 for(ContentTime ct : contentTimes){
 
-                    if (pct.getContent().equals(ct.getContent())){
-
-                        pct.setTimeBegin(ct.getTimeBegin());
-                        pct.setTimeEnd(ct.getTimeEnd());
+                    if (pct.getTimeBegin().equals(ct.getTimeBegin()) && pct.getTimeEnd().equals(ct.getTimeEnd())){
+                        pct.setContent(ct.getContent());
                     }
                 }
-                System.out.println("PCT Object ready: \n PCT person: " + pct.getName() + "\n PCT content: "
-                        + pct.getContent() + "\n PCT time begin: " + pct.getTimeBegin() + "\n PCT time end: "
-                        + pct.getTimeEnd());
                 personContentTimes.add(pct);
             }
+            for(PersonContentTime pct: personContentTimes){
+                if (pct.getContent().isEmpty()){
+                    JOptionPane.showMessageDialog(rootPane, "Can not generate! Wrong time!");
+                    return;
+                }
+            }
+            List<ReportPart> reportPartTranscripts = reportPartController.getReportPartIds(2, GenerateReport.meeting.getId());
+            List<PersonContentTime> personContentTimeTranscript = new ArrayList<>();
+            if(reportPartTranscripts.isEmpty()){
+                JOptionPane.showMessageDialog(rootPane, "Dont have Transcript. Cant compute accuracy!");
+            }else{
+                ReportPart reportPartTranscript = reportPartTranscripts.get(0);
+                String contentTranscript = reportPartController.getReportPartContent(reportPartTranscript.getId());
+                String[] linesInTranscript = contentTranscript.split("\n");
+                for (String line: linesInTranscript){
+                    if (line.length() != 0){
+                        PersonContentTime pct = new PersonContentTime();
+                        String[] parts = line.split("\\]");
+                        if (parts.length != 2){
+                            JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                            return;
+                        }
+                        String[] timeparts = parts[0].split("\\~");
+                        if (timeparts.length != 2){
+                            JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                            return;
+                        }
+                        pct.setTimeBegin(timeparts[0].substring(1));
+                        pct.setTimeEnd(timeparts[1]);
+                        String[] pcparts = parts[1].split("-");
+                        if (pcparts.length != 2){
+                            JOptionPane.showMessageDialog(rootPane, "Input file have wrong type. Can't not generate report!\n Choose a right input format or Add new report part file!");
+                            return;
+                        }
+                        pct.setName(pcparts[0]);
+                        pct.setContent(pcparts[1]);
+                        personContentTimeTranscript.add(pct);
+                    }
+                }
+            }
+            for (PersonContentTime pct : personContentTimes){
+                System.out.println(pct.getName() + pct.getContent() + pct.getTimeBegin() + pct.getTimeEnd());
+            }
+            personContentTimeTranscript.removeAll(personContentTimes);
+            for (PersonContentTime pct : personContentTimeTranscript){
+                System.out.println(pct.getName() + pct.getContent() + pct.getTimeBegin() + pct.getTimeEnd());
+            }
+            double accuracy = (personContentTimes.size() - personContentTimeTranscript.size()) / (double)personContentTimes.size();
+            JOptionPane.showMessageDialog(rootPane, "Accuracy: "+accuracy);
             Report report = new Report();
             report.setMeetingId(GenerateReport.meeting.getId());
             report.setReportName(this.reportNameTextField.getText());
@@ -358,7 +412,7 @@ public class GenerateReport extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea personContentPartTextArea;
+    private javax.swing.JTextArea personTimePartTextArea;
     private javax.swing.JTextField reportNameTextField;
     // End of variables declaration//GEN-END:variables
 }

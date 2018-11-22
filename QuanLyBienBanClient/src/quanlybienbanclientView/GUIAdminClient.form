@@ -257,7 +257,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="You are logging in as Admin "/>
+            <Property name="text" type="java.lang.String" value="You are logging in as"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">

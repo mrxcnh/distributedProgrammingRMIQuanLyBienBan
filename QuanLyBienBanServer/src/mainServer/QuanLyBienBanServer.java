@@ -5,8 +5,6 @@
  */
 package mainServer;
 
-import remoteImpl.RemoteImpl;
-
 /**
  *
  * @author thanhdovan
