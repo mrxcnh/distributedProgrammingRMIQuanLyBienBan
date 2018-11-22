@@ -5,27 +5,25 @@
  */
 package quanlybienbanclientView;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import entity.User;
 import helpfile.EncryptPassword;
+import quanlybienbanclientController.UserController;
+import registry.Register;
+import remoteInterface.RemoteAdminInterface;
+import remoteInterface.RemoteInterface;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
-import quanlybienbanclientController.UserController;
-import registry.Register;
-import remoteInterface.RemoteAdminInterface;
-import remoteInterface.RemoteInterface;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *

@@ -4,14 +4,23 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/ContentTime.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/ReportPart.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/RemoteInterface.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/Report.java</file>
-            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/RemoteAdminInterface.java</file>
-            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/RemoteReportInterface.java</file>
-            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/PersonTime.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/TestRemoteClientInterface.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/RemoteManagerInterface.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/User.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/helpfile/CheckReportPart.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/PersonContentTime.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/helpfile/ConfigFile.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/RemoteStaffInterface.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/Meeting.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/helpfile/EncryptPassword.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/RemoteAdminInterface.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/ConnectDB.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/remoteInterface/RemoteReportInterface.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/PersonTime.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanAPI/src/entity/PeopleEditReport.java</file>
         </group>
     </open-files>
 </project-private>

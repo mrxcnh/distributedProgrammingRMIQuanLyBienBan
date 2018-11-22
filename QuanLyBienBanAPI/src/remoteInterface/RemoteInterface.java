@@ -24,7 +24,7 @@ public interface RemoteInterface extends Remote{
     public void addRemoteClientInterface(TestRemoteClientInterface rci) throws RemoteException;
     public void removeRemoteClientInterface(TestRemoteClientInterface b) throws RemoteException;
     public String printMsg(String msg) throws RemoteException;
-    
+    public void updateStatus(int meetingId, int stat) throws RemoteException;
     public void addRemoteManagerInterface(RemoteManagerInterface rm) throws RemoteException;
     public void removeRemoteManagerInterface(RemoteManagerInterface rm) throws RemoteException;
     public void updateMeetingTable(List<Meeting> list) throws RemoteException;
@@ -39,7 +39,7 @@ public interface RemoteInterface extends Remote{
     public void addRemoteStaffInterface(RemoteStaffInterface rs) throws RemoteException;
     public void removeRemoteStaffInterface(RemoteStaffInterface rs) throws RemoteException;
     public void staffUpdateMeetingTable(List<Meeting> list) throws RemoteException;
-    public void staffUpdateReportPartTable(List<ReportPart> list, int meetingId) throws RemoteException;
+    public void staffUpdateReportPartTable(List<ReportPart> list, int meetingId, String userUpload) throws RemoteException;
     public void addRemoteReportInterface(RemoteReportInterface rr) throws RemoteException;
     public void removeRemoteReportInterface(RemoteReportInterface rr) throws RemoteException;
     public void updateUserEdittingTable(List<User> list, int reportId) throws RemoteException;
@@ -60,6 +60,7 @@ public interface RemoteInterface extends Remote{
     
     // interface for meeting
     public List<Meeting> getMeetings() throws RemoteException;
+    public int getMeetingId(int reportId) throws RemoteException;
     public Meeting getMeeting(int meetingId) throws RemoteException;
     public int addMeeting(Meeting meeting) throws RemoteException;
     public int editMeeting(Meeting meeting) throws RemoteException;

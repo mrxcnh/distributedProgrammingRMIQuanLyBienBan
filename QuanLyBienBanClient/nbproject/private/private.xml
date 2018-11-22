@@ -4,12 +4,23 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIManagerClient.java</file>
-            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/LoginForm.java</file>
-            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/registry/Register.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientController/ReportController.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientModel/UserModel.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientModel/MeetingModel.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIAdminClient.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientModel/PermissionModel.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientController/UserController.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIViewReport.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/LoginForm.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientModel/ReportModel.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/registry/Register.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientController/MeetingController.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientController/PermissionController.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientController/HWPFTest.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GUIStaffClient.java</file>
             <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientView/GenerateReport.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientController/ReportPartController.java</file>
+            <file>file:/home/wnncr/QuanLyBienBan/QuanLyBienBanClient/src/quanlybienbanclientModel/ReportPartModel.java</file>
         </group>
     </open-files>
 </project-private>

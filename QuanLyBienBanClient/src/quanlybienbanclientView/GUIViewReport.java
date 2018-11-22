@@ -9,9 +9,18 @@ import entity.Meeting;
 import entity.PeopleEditReport;
 import entity.Report;
 import entity.User;
+import quanlybienbanclientController.PermissionController;
+import quanlybienbanclientController.ReportController;
+import quanlybienbanclientController.UserController;
+import remoteInterface.RemoteInterface;
+import remoteInterface.RemoteReportInterface;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -19,22 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
-import quanlybienbanclientController.PermissionController;
-import quanlybienbanclientController.ReportController;
-import quanlybienbanclientController.UserController;
 import registry.Register;
-import remoteInterface.RemoteInterface;
-import remoteInterface.RemoteReportInterface;
+
 
 /**
  *
  * @author thanhdovan
  */
 public class GUIViewReport extends javax.swing.JFrame {
-    int caretpos=0;
+    static int caretpos=0;
     private final PermissionController permissionController;
     private final ReportController reportController;
     private final UserController userController;
@@ -175,6 +177,11 @@ public class GUIViewReport extends javax.swing.JFrame {
         });
 
         jButton3.setText("Export");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         reportTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -382,6 +389,11 @@ public class GUIViewReport extends javax.swing.JFrame {
         content = GUIViewReport.reportContentTextArea.getText();
         if (row != -1){
             int reportId = Integer.parseInt(GUIViewReport.reportTable.getValueAt(row, 0).toString());
+            List<Integer> checkUserIds = reportController.getIdOfUserEdit(reportId);
+            if(!checkUserIds.isEmpty()){
+                JOptionPane.showMessageDialog(rootPane, "Someone is editting this report! Can not access!");
+                return;
+            }
             if (GUIViewReport.user.getId()==GUIViewReport.meeting.getUserCreateId()||"w".equals(permissionController.getPermission(user, meeting))||"u".equals(permissionController.getPermission(user, meeting))){    
                 PeopleEditReport per = new PeopleEditReport();
                 per.setUserId(user.getId());
@@ -540,6 +552,18 @@ public class GUIViewReport extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteReportButtonActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        exportToWord();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void exportToWord() {
+        if (reportSelected == null) {
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn biên bản nào");
+        } else if (JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "", JOptionPane.YES_NO_OPTION) == 0) {
+            reportController.exportReportToWord(reportSelected.getId());
+        }
+    }
+    
     private void updateStatus(int caretpos) {
         System.out.println("caret: " + caretpos);
     }
@@ -576,8 +600,8 @@ public class GUIViewReport extends javax.swing.JFrame {
 
         @Override
         public void updateReportContent(String content, int reportId, int caretOfClientChange, int status) throws RemoteException {
-            SwingUtilities.invokeLater(new Thread(new Runnable(){
-                public void run(){
+            SwingUtilities.invokeLater(new Runnable(){
+                public void run() {
                     if (GUIViewReport.this.reportSelected.getId() == reportId){
                         if (caretOfClientChange < GUIViewReport.this.caretpos){
                             System.out.println(status);
@@ -587,7 +611,7 @@ public class GUIViewReport extends javax.swing.JFrame {
                         GUIViewReport.reportContentTextArea.setCaretPosition(GUIViewReport.this.caretpos);
                     }
                 }
-            }));
+            });
         }
     
     }

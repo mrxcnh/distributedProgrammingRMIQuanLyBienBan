@@ -6,6 +6,7 @@
 package quanlybienbanclientModel;
 
 import entity.Meeting;
+import entity.Report;
 import entity.User;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -32,17 +33,26 @@ public class MeetingModel {
         }
         return list;
     }
-
-    public Meeting getMeeting(int id){
-        Meeting user = null;
+    public int getMeetingId(int reportId){
         try{
             RemoteInterface stub = Register.registry();
-            user = stub.getMeeting(id);
-            return user;
+            int i = stub.getMeetingId(reportId);
+            return i;
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(MeetingModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return user;
+        return 0;
+    }
+    public Meeting getMeeting(int id){
+        Meeting m = null;
+        try{
+            RemoteInterface stub = Register.registry();
+            m = stub.getMeeting(id);
+            return m;
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(MeetingModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return m;
     }
 
     public int addMeeting(Meeting user){
