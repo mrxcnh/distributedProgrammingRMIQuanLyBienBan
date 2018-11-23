@@ -637,6 +637,89 @@ public class GUIManagerClient extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootPane, "These fields are required");
                     return;
                 }
+                String time = "";
+                String[] timeSyntax = timeStart.split("\\:");
+                if(timeSyntax.length == 3){
+                    String hour = timeSyntax[0];
+                    String minute = timeSyntax[1];
+                    String second = timeSyntax[2];
+                    if(hour.matches("[0-9]+")) {
+                        if (Integer.parseInt(hour)> 23){
+                            JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                            return;
+                        }
+                        if (hour.length()==1){
+                            hour = "0"+hour;
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                        return;
+                    }
+                    if(minute.matches("[0-9]+")) {
+                        if (Integer.parseInt(minute)> 59){
+                            JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                            return;
+                        }
+                        if (minute.length()==1){
+                            minute = "0"+minute;
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                        return;
+                    }
+                    if(second.matches("[0-9]+")) {
+                        if (Integer.parseInt(second)> 59){
+                            JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                            return;
+                        }
+                        if (second.length()==1){
+                            second = "0"+second;
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                        return;
+                    }
+                    time = hour + ":" + minute+":" + second;
+                }
+                else if(timeSyntax.length == 2){
+                    String hour = timeSyntax[0];
+                    String minute = timeSyntax[1];
+                    String second = "00";
+                    if(hour.matches("[0-9]+")) {
+                        if (Integer.parseInt(hour)> 23){
+                            JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                            return;
+                        }
+                        if (hour.length()==1){
+                            hour = "0"+hour;
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                        return;
+                    }
+                    if(minute.matches("[0-9]+")) {
+                        if (Integer.parseInt(minute)> 59){
+                            JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                            return;
+                        }
+                        if (minute.length()==1){
+                            minute = "0"+minute;
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                        return;
+                    }
+                    time = hour + ":" + minute+":" + second;
+                }
+                else{
+                    JOptionPane.showMessageDialog(rootPane, "Wrong Time value");
+                    return;
+                }
                 Meeting meetingx = new Meeting();
                 meetingx.setId(Integer.parseInt(GUIManagerClient.jTable1.getValueAt(GUIManagerClient.jTable1.getSelectedRow(), 0).toString().substring(3)));
                 meetingx.setTitle(title);
