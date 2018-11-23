@@ -18,5 +18,5 @@ import java.util.List;
 public interface RemoteReportInterface extends Remote {
     public void updateReportTable(List<Report> list) throws RemoteException;
     public void updateUserEdittingTable(List<User> list, int reportId) throws RemoteException;
-    public void updateReportContent(String content, int reportId, int caretOfClientChange, int statusChange) throws RemoteException;
+    public void updateReportContent(String content, int reportId) throws RemoteException;
 }

@@ -9,6 +9,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import remoteInterface.ConnectDB;
 import remoteInterface.RemoteInterface;
 
 /**
@@ -17,7 +18,7 @@ import remoteInterface.RemoteInterface;
  */
 public class Register {
     public static RemoteInterface registry() throws RemoteException, NotBoundException{
-        Registry registry = LocateRegistry.getRegistry("localhost",Registry.REGISTRY_PORT);
+        Registry registry = LocateRegistry.getRegistry(ConnectDB.SERVER_IP_ADDRESS,Integer.parseInt(ConnectDB.SERVER_PORT));
         RemoteInterface stub = (RemoteInterface) registry.lookup("remoteInterface");
         return stub;
     }

@@ -21,7 +21,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -30,7 +29,6 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 
 /**
  *
@@ -252,7 +250,7 @@ public class GUIStaffClient extends javax.swing.JFrame {
             }
         });
 
-        viewReportButton.setText("View Report");
+        viewReportButton.setText("View Report Content");
         viewReportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewReportButtonActionPerformed(evt);
@@ -264,7 +262,7 @@ public class GUIStaffClient extends javax.swing.JFrame {
         jTextArea1.setRows(5);
         jScrollPane2.setViewportView(jTextArea1);
 
-        generateReportButton.setText("Generate Report");
+        generateReportButton.setText("Generate Report Content");
         generateReportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateReportButtonActionPerformed(evt);
@@ -547,7 +545,7 @@ public class GUIStaffClient extends javax.swing.JFrame {
                 reportPart.setFileName(selectedFile.getName());
                 reportPart.setContent(selectedFile);
                 List<ReportPart> trans = reportPartController.getReportPartIds(2, meetingSelected.getId());
-                if (trans.isEmpty()){
+                if (reportPart.getType()!=2){
                     int i = reportPartController.uploadFile(reportPart);
                     if( i > 0 ){
                         JOptionPane.showMessageDialog(rootPane, "Success!");
@@ -577,13 +575,52 @@ public class GUIStaffClient extends javax.swing.JFrame {
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(rootPane, "Already have a transcript! Remove it first!");
-                    try {
-                            remoteStaffImpl.h.updateStatus(meetingId, 0);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
+                    if (!trans.isEmpty()){
+                        JOptionPane.showMessageDialog(rootPane, "Already have a transcript! Remove it first!");
+                        try {
+                                remoteStaffImpl.h.updateStatus(meetingId, 0);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        return;
+                    }
+                    else {
+                        int i = reportPartController.uploadFile(reportPart);
+                        Report report = new Report();
+                        report.setMeetingId(meetingId);
+                        report.setReportContent(this.jTextArea1.getText());
+                        report.setReportName(meetingSelected.getTitle()+"Transcript");
+                        report.setAuthors(user.getUsername());
+                        int ii = reportController.addReport(report);
+                        if( i > 0 && ii > 0){
+                            JOptionPane.showMessageDialog(rootPane, "Success!");
+                            this.jTextArea1.setText("");
+                            this.fileNameTextField.setText("");
+                            this.buttonGroup1.clearSelection();
+                            List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
+                            List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
+                            List<ReportPart> listReportPartTr = reportPartController.getReportPartIds(2, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
+                            List<ReportPart> listAllReportPart = new ArrayList<>(listReportPartPC);
+                            listAllReportPart.addAll(listReportPartCT);
+                            listAllReportPart.addAll(listReportPartTr);
+                //            GUIStaffClient.updateReportPartTable(listAllReportPart);
+                            try {
+                                remoteStaffImpl.h.staffUpdateReportPartTable(listAllReportPart, meetingId, user.getUsername());
+                                List<Report> list = reportController.getReports(meetingId);
+                                remoteStaffImpl.h.updateReportTable(list);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger("Khong update duoc table!");
+                            }
                         }
-                    return;
+                        else{
+                            JOptionPane.showMessageDialog(rootPane, "Failed! Try again!");
+                            try {
+                                remoteStaffImpl.h.updateStatus(meetingId, 0);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -684,8 +721,10 @@ public class GUIStaffClient extends javax.swing.JFrame {
                 reportPartController.deleteReportPart(Integer.parseInt(GUIStaffClient.reportPartTable.getValueAt(row, 0).toString()));
                 List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, meetingId);
                 List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, meetingId);
+                List<ReportPart> listTranscript = reportPartController.getReportPartIds(2, meetingId);
                 List<ReportPart> listAllReportPart = new ArrayList<>(listReportPartPC);
                 listAllReportPart.addAll(listReportPartCT);
+                listAllReportPart.addAll(listTranscript);
                 try {
                     remoteStaffImpl.h.staffUpdateReportPartTable(listAllReportPart, meetingId, null);
                 } catch (RemoteException ex) {
@@ -782,7 +821,17 @@ public class GUIStaffClient extends javax.swing.JFrame {
                     if(GUIStaffClient.this.meetingSelected.getId() == meetingId){
                         GUIStaffClient.updateReportPartTable(list);
                         GUIStaffClient.this.filePreviewTextArea.setText("");
-                        if(userUpload != null){    
+                        if (userUpload==null){
+                            GUIStaffClient.this.jLabel9.setText("Updated!");
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    GUIStaffClient.this.jLabel9.setText("");
+                                }
+                            }, 5000);
+                        }
+                        else{    
                             GUIStaffClient.this.jLabel9.setText(userUpload+ " uploaded file!");
                             Timer timer = new Timer();
                             timer.schedule(new TimerTask() {
@@ -790,7 +839,7 @@ public class GUIStaffClient extends javax.swing.JFrame {
                                 public void run() {
                                     GUIStaffClient.this.jLabel9.setText("");
                                 }
-                            }, 3000);
+                            }, 5000);
                         }
                     }
                 }

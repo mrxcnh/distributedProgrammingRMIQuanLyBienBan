@@ -96,7 +96,7 @@ public class GenerateReport extends javax.swing.JFrame {
             }
         });
 
-        generateReportButton.setText("Generate Report");
+        generateReportButton.setText("Generate Content");
         generateReportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateReportButtonActionPerformed(evt);
@@ -282,12 +282,13 @@ public class GenerateReport extends javax.swing.JFrame {
                 pct.setName(pt.getName());
                 pct.setTimeBegin(pt.getTimeBegin());
                 pct.setTimeEnd(pt.getTimeEnd());
+                String content = "";
                 for(ContentTime ct : contentTimes){
-
                     if (pct.getTimeBegin().equals(ct.getTimeBegin()) && pct.getTimeEnd().equals(ct.getTimeEnd())){
-                        pct.setContent(ct.getContent());
+                        content += ct.getContent();
                     }
                 }
+                pct.setContent(content);
                 personContentTimes.add(pct);
             }
             for(PersonContentTime pct: personContentTimes){

@@ -16,7 +16,8 @@ public class ConnectDB {
     private static final String USER = ConfigFile.getInstance().get("DBMS_USER");
     private static final String PASSWORD = ConfigFile.getInstance().get("DBMS_PASSWORD");
     private static final String DB_URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?zeroDateTimeBehavior=convertToNull&autoReconnect=true&useSSL=false&characterEncoding=utf8"; //Địa chỉ DataBase
-
+    public static final String SERVER_IP_ADDRESS = ConfigFile.getInstance().get("SERVER_IP_ADDRESS");
+    public static final String SERVER_PORT = ConfigFile.getInstance().get("SERVER_PORT");
     public static Connection connectDB() {
         Connection conn = null;
         try {
@@ -25,14 +26,12 @@ public class ConnectDB {
             System.err.println(ex);
             return null;
         }
-        System.out.println("Connecting to a selected database...");
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
         } catch (SQLException ex) {
             System.err.println(ex);
             return null;
         }
-        System.out.println("Connected database successfully...");
         return conn;
     }
 }

@@ -11,17 +11,10 @@ import entity.User;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -659,6 +652,7 @@ public class GUIManagerClient extends javax.swing.JFrame {
                     } catch (RemoteException ex) {
                         Logger.getLogger("Khong update duoc table!");
                     }
+                    this.jLabel5.setText("");
                     this.meetingText.setText("");
                     this.timeText.setText("HH:mm:ss");
                     GUIManagerClient.jTable1.clearSelection();
@@ -783,6 +777,7 @@ public class GUIManagerClient extends javax.swing.JFrame {
                 } catch (RemoteException ex) {
                     Logger.getLogger("Khong update duoc table!");
                 }
+                this.jLabel5.setText("");
             this.meetingText.setText("");
             this.timeText.setText("HH:mm:ss");
             GUIManagerClient.jTable1.clearSelection();
@@ -837,6 +832,7 @@ public class GUIManagerClient extends javax.swing.JFrame {
                         } catch (RemoteException ex) {
                             Logger.getLogger("Khong update duoc table!");
                         }
+                        this.jLabel5.setText("");
                         this.meetingText.setText("");
                         this.timeText.setText("HH:mm:ss");
                         GUIManagerClient.jTable1.clearSelection();

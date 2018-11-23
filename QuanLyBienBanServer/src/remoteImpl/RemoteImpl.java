@@ -181,10 +181,10 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         }
     }
     @Override
-    public void updateReportContent(String content, int reportId, int caretOfClientChange, int statusChange) throws RemoteException {
+    public void updateReportContent(String content, int reportId) throws RemoteException {
         for (int i = 0; i < reportClients.size() ; i++){
             RemoteReportInterface rr = (RemoteReportInterface)reportClients.elementAt(i);
-            rr.updateReportContent(content, reportId, caretOfClientChange, statusChange);
+            rr.updateReportContent(content, reportId);
         }
     }
     @Override
@@ -698,12 +698,11 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     public int addReport(Report report) throws RemoteException{
         
         String sql = "INSERT INTO reports (meetingId, reportName, reportContent, timeCreate, authors) VALUES (?, ?, ?, ?, ?);";
-        Calendar cal = new GregorianCalendar();
-        int second = cal.get(Calendar.SECOND);
-        int minute = cal.get(Calendar.MINUTE);
-        int hour = cal.get(Calendar.HOUR);
-
-        String timeCreate = hour + ":"+minute+":"+second;
+       
+        //Co_the_sai_khi_test_2_may
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	java.util.Date date = new java.util.Date();
+        String timeCreate = dateFormat.format(date);
         try {
             Connection conn = ConnectDB.connectDB();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -759,12 +758,10 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         for (PersonContentTime pct: report.getPersonContentTimes()){
             reportContent += "["+ pct.getTimeBegin() +"~"+ pct.getTimeEnd() +"]"+pct.getName()+"-"+ pct.getContent() +"\n";
         }
-        Calendar cal = new GregorianCalendar();
-        int second = cal.get(Calendar.SECOND);
-        int minute = cal.get(Calendar.MINUTE);
-        int hour = cal.get(Calendar.HOUR);
-
-        String timeCreate = hour + ":"+minute+":"+second;
+        //Co_the_sai_khi_test_2_may
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	java.util.Date date = new java.util.Date();
+        String timeCreate = dateFormat.format(date);
         
         String sql = "insert into reports (meetingId, reportName, reportContent, timeCreate, authors) values (?, ?, ?, ?, ?);";
         try {

@@ -10,6 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import javax.swing.JOptionPane;
 import remoteImpl.RemoteImpl;
+import remoteInterface.ConnectDB;
 
 /**
  *
@@ -137,8 +138,8 @@ public class GUIServer extends javax.swing.JFrame {
         this.jButton1.setVisible(false);
         this.jButton2.setVisible(true);
         try {
-            System.setProperty("java.rmi.server.hostname", "localhost");
-            Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT); 
+            System.setProperty("java.rmi.server.hostname", ConnectDB.SERVER_IP_ADDRESS);
+            Registry registry = LocateRegistry.createRegistry(Integer.parseInt(ConnectDB.SERVER_PORT)); 
             RemoteImpl remoteObjUser = new RemoteImpl();
             registry.rebind("remoteInterface", remoteObjUser);  
             System.err.println("Server ready \n");

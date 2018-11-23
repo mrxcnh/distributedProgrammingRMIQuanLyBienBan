@@ -327,7 +327,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="viewReportButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="View Report"/>
+            <Property name="text" type="java.lang.String" value="View Report Content"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewReportButtonActionPerformed"/>
@@ -351,7 +351,7 @@
         </Container>
         <Component class="javax.swing.JButton" name="generateReportButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Generate Report"/>
+            <Property name="text" type="java.lang.String" value="Generate Report Content"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateReportButtonActionPerformed"/>

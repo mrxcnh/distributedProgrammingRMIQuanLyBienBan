@@ -20,12 +20,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import registry.Register;
@@ -36,7 +36,6 @@ import registry.Register;
  * @author thanhdovan
  */
 public class GUIViewReport extends javax.swing.JFrame {
-    static int caretpos=0;
     private final PermissionController permissionController;
     private final ReportController reportController;
     private final UserController userController;
@@ -161,6 +160,7 @@ public class GUIViewReport extends javax.swing.JFrame {
         deleteReportButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -284,18 +284,20 @@ public class GUIViewReport extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(deleteReportButton))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18))
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(deleteReportButton))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
@@ -322,7 +324,8 @@ public class GUIViewReport extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -343,7 +346,7 @@ public class GUIViewReport extends javax.swing.JFrame {
                         .addComponent(quitEdittingButton)
                         .addComponent(deleteReportButton))
                     .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(96, 96, 96))
         );
@@ -509,15 +512,10 @@ public class GUIViewReport extends javax.swing.JFrame {
 
     private void reportContentTextAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_reportContentTextAreaKeyReleased
         try {
-            int oldCaretPos = this.caretpos;
-            this.caretpos = GUIViewReport.reportContentTextArea.getCaretPosition();
             String newcontent = GUIViewReport.reportContentTextArea.getText();
-            System.out.println("Old Caret pos: " + oldCaretPos + " new Caret Pos : "+ this.caretpos);
-            System.out.println("Old content length: " + content.length() + " new Content length : "+ newcontent.length());
             if (newcontent.length() - content.length() != 0){
-                int statusChange= newcontent.length() - content.length();
                 content = newcontent;
-                remoteReportImpl.h.updateReportContent(newcontent, reportSelected.getId(), this.caretpos, statusChange);
+                remoteReportImpl.h.updateReportContent(newcontent, reportSelected.getId());
             }
         } catch (RemoteException ex) {
             Logger.getLogger("Can not update content of report");
@@ -553,20 +551,26 @@ public class GUIViewReport extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteReportButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if (reportSelected == null) {
+            JOptionPane.showMessageDialog(null, "Select a report first!");
+            return;
+        }
+        List<Integer> userIds = reportController.getIdOfUserEdit(reportSelected.getId());
+        if (!userIds.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Someone editting this! Cannot export!");
+            return;
+        }
         exportToWord();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void exportToWord() {
         if (reportSelected == null) {
-            JOptionPane.showMessageDialog(null, "Bạn chưa chọn biên bản nào");
+            JOptionPane.showMessageDialog(null, "Select a report first!");
         } else if (JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "", JOptionPane.YES_NO_OPTION) == 0) {
             reportController.exportReportToWord(reportSelected.getId());
         }
     }
     
-    private void updateStatus(int caretpos) {
-        System.out.println("caret: " + caretpos);
-    }
     class RemoteReportImpl extends UnicastRemoteObject implements RemoteReportInterface{
         public RemoteInterface h;
         private Meeting meeting;
@@ -583,6 +587,14 @@ public class GUIViewReport extends javax.swing.JFrame {
             SwingUtilities.invokeLater(new Runnable(){
                 public void run(){
                     GUIViewReport.updateReportTable(list);
+                    GUIViewReport.this.jLabel8.setText("Updated!");
+                    java.util.Timer timer = new java.util.Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            GUIViewReport.this.jLabel8.setText("");
+                        }
+                    }, 3000);
                 }
             });
         }
@@ -599,16 +611,11 @@ public class GUIViewReport extends javax.swing.JFrame {
         }
 
         @Override
-        public void updateReportContent(String content, int reportId, int caretOfClientChange, int status) throws RemoteException {
+        public void updateReportContent(String content, int reportId) throws RemoteException {
             SwingUtilities.invokeLater(new Runnable(){
                 public void run() {
                     if (GUIViewReport.this.reportSelected.getId() == reportId){
-                        if (caretOfClientChange < GUIViewReport.this.caretpos){
-                            System.out.println(status);
-                            GUIViewReport.this.caretpos += status;
-                        }
                         GUIViewReport.updateReportContent(content);
-                        GUIViewReport.reportContentTextArea.setCaretPosition(GUIViewReport.this.caretpos);
                     }
                 }
             });
@@ -661,6 +668,7 @@ public class GUIViewReport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

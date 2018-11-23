@@ -7,7 +7,6 @@ package quanlybienbanclientView;
 
 import entity.User;
 import helpfile.EncryptPassword;
-import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
 import quanlybienbanclientController.UserController;
 
