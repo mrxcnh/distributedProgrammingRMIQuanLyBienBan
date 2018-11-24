@@ -883,12 +883,6 @@ public class GUIManagerClient extends javax.swing.JFrame {
             LoginForm lg = new LoginForm();
             lg.setVisible(true);
             this.setVisible(false);
-            try{
-                RemoteInterface stub = Register.registry();
-                stub.clientLogoutMessage(GUIManagerClient.user);
-            } catch (RemoteException | NotBoundException ex) {
-                Logger.getLogger(GUIAdminClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
             GUIManagerClient.user = null;
         }
         

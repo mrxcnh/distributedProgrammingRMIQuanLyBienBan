@@ -15,7 +15,7 @@ public class CheckReportPart {
         if (reportPartType == 0){
             String[] linesInCTPart = reportPartContent.split("\n");
             for (String line: linesInCTPart){
-                if (line.length() != 0){
+                if (line.length() > 1){
                     String[] parts = line.split("\\[");
                     if (parts.length != 2){
                         return false;
@@ -31,7 +31,7 @@ public class CheckReportPart {
         else if (reportPartType == 1){
             String[] linesInCTPart = reportPartContent.split("\n");
             for (String line: linesInCTPart){
-                if (line.length() != 0){
+                if (line.length() > 1){
                     String[] parts = line.split("\\[");
                     if (parts.length != 2){
                         return false;
@@ -47,7 +47,7 @@ public class CheckReportPart {
         else{
             String[] linesInTranscript = reportPartContent.split("\n");
             for (String line: linesInTranscript){
-                if (line.length() != 0){
+                if (line.length() > 1){
                     String[] parts = line.split("\\]");
                     if (parts.length != 2){
                         return false;

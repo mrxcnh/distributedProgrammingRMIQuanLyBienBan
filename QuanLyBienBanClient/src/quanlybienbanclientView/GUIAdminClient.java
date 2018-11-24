@@ -444,12 +444,6 @@ public class GUIAdminClient extends javax.swing.JFrame {
             LoginForm lg = new LoginForm();
             lg.setVisible(true);
             this.setVisible(false);
-            try{
-                    RemoteInterface stub = Register.registry();
-                    stub.clientLogoutMessage(user);
-            } catch (RemoteException | NotBoundException ex) {
-                Logger.getLogger("Log out error");
-            }
             try {
                 this.remoteAdminImpl.h.removeRemoteAdminInterface(remoteAdminImpl);
             } catch (RemoteException ex) {

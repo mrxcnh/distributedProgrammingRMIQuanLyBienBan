@@ -474,7 +474,6 @@ public class GUIStaffClient extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Invalid File Type");
             } else {
                 this.fileNameTextField.setText(selectedFile.getAbsolutePath());
-                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
                 BufferedInputStream bufferedStream;
                 try {
                     bufferedStream = new BufferedInputStream(new FileInputStream(selectedFile));
@@ -543,7 +542,7 @@ public class GUIStaffClient extends javax.swing.JFrame {
                     }
                 }
                 reportPart.setFileName(selectedFile.getName());
-                reportPart.setContent(selectedFile);
+                reportPart.setContent(this.jTextArea1.getText());
                 List<ReportPart> trans = reportPartController.getReportPartIds(2, meetingSelected.getId());
                 if (reportPart.getType()!=2){
                     int i = reportPartController.uploadFile(reportPart);
@@ -658,13 +657,7 @@ public class GUIStaffClient extends javax.swing.JFrame {
             LoginForm lg = new LoginForm();
             lg.setVisible(true);
             this.setVisible(false);
-            try{
-                RemoteInterface stub = Register.registry();
-                stub.clientLogoutMessage(GUIStaffClient.user);
-            } catch (RemoteException | NotBoundException ex) {
-                Logger.getLogger(GUIAdminClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            GUIStaffClient.user = new User();
+            GUIStaffClient.user = null;
         }
     }//GEN-LAST:event_logoutButtonActionPerformed
 

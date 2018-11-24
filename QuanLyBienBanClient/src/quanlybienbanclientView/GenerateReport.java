@@ -226,7 +226,7 @@ public class GenerateReport extends javax.swing.JFrame {
             String[] linesInPTPart = personTimePart.split("\n");
             List<PersonTime> personTimes = new ArrayList<>();
             for (String line: linesInPTPart){
-                if (line.length() != 0){
+                if (line.length() > 1){
                     PersonTime personTime = new PersonTime();
                     String[] parts = line.split("\\[");
                     if (parts.length != 2){
@@ -254,7 +254,7 @@ public class GenerateReport extends javax.swing.JFrame {
             String[] linesInCTPart = contentTimePart.split("\n");
             List<ContentTime> contentTimes = new ArrayList<>();
             for (String line: linesInCTPart){
-                if (line.length() != 0){
+                if (line.length() > 1){
                     ContentTime contentTime = new ContentTime();
                     String[] parts = line.split("\\[");
                     if (parts.length != 2){
@@ -306,7 +306,7 @@ public class GenerateReport extends javax.swing.JFrame {
                 String contentTranscript = reportPartController.getReportPartContent(reportPartTranscript.getId());
                 String[] linesInTranscript = contentTranscript.split("\n");
                 for (String line: linesInTranscript){
-                    if (line.length() != 0){
+                    if (line.length() > 1){
                         PersonContentTime pct = new PersonContentTime();
                         String[] parts = line.split("\\]");
                         if (parts.length != 2){
@@ -331,13 +331,7 @@ public class GenerateReport extends javax.swing.JFrame {
                     }
                 }
             }
-            for (PersonContentTime pct : personContentTimes){
-                System.out.println(pct.getName() + pct.getContent() + pct.getTimeBegin() + pct.getTimeEnd());
-            }
             personContentTimeTranscript.removeAll(personContentTimes);
-            for (PersonContentTime pct : personContentTimeTranscript){
-                System.out.println(pct.getName() + pct.getContent() + pct.getTimeBegin() + pct.getTimeEnd());
-            }
             double accuracy = (personContentTimes.size() - personContentTimeTranscript.size()) / (double)personContentTimes.size();
             JOptionPane.showMessageDialog(rootPane, "Accuracy: "+accuracy);
             Report report = new Report();

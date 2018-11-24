@@ -36,6 +36,7 @@ import registry.Register;
  * @author thanhdovan
  */
 public class GUIViewReport extends javax.swing.JFrame {
+    private int caretpos;
     private final PermissionController permissionController;
     private final ReportController reportController;
     private final UserController userController;
@@ -320,12 +321,13 @@ public class GUIViewReport extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel7)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -512,6 +514,7 @@ public class GUIViewReport extends javax.swing.JFrame {
 
     private void reportContentTextAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_reportContentTextAreaKeyReleased
         try {
+            caretpos = reportContentTextArea.getCaretPosition();
             String newcontent = GUIViewReport.reportContentTextArea.getText();
             if (newcontent.length() - content.length() != 0){
                 content = newcontent;
@@ -617,6 +620,7 @@ public class GUIViewReport extends javax.swing.JFrame {
                     if (GUIViewReport.this.reportSelected.getId() == reportId){
                         GUIViewReport.updateReportContent(content);
                     }
+                    GUIViewReport.reportContentTextArea.setCaretPosition(GUIViewReport.this.caretpos);
                 }
             });
         }

@@ -17,7 +17,7 @@ public class ReportPart implements Serializable {
     private int meetingId;
     private String fileName;
     private int type;
-    private File content;
+    private String content;
 
     public String getFileName() {
         return fileName;
@@ -35,7 +35,7 @@ public class ReportPart implements Serializable {
         return type;
     }
 
-    public File getContent() {
+    public String getContent() {
         return content;
     }
 
@@ -55,7 +55,7 @@ public class ReportPart implements Serializable {
         this.fileName = fileName;
     }
 
-    public void setContent(File content) {
+    public void setContent(String content) {
         this.content = content;
     }
     

@@ -570,22 +570,6 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
 // Remote Implement for file
     @Override
     public int uploadFile(ReportPart reportPart) throws RemoteException{
-        String content = "";
-        BufferedInputStream bufferedStream;
-        try {
-            bufferedStream = new BufferedInputStream(new FileInputStream(reportPart.getContent()));
-            int nextByte;
-            StringBuffer localBuffer = new StringBuffer();
-            while( -1 != (nextByte = bufferedStream.read())) {
-                char nextChar = (char) nextByte;
-                localBuffer.append(nextChar);
-            }
-            content += localBuffer.toString();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String sql = "insert into reportparts (meetingId, fileName, type, reportPartContent) values (?, ?, ?, ?);";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -593,7 +577,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
             stmt.setInt(1, reportPart.getMeetingId());
             stmt.setString(2, reportPart.getFileName());
             stmt.setInt(3, reportPart.getType());
-            stmt.setString(4, content);
+            stmt.setString(4, reportPart.getContent());
             int i = stmt.executeUpdate();
             conn.close();
             return i;

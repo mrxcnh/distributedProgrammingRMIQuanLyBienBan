@@ -34,7 +34,6 @@ public class ReportPartModel {
     public int uploadFile(ReportPart reportPart){
         try {
             RemoteInterface stub = Register.registry();
-            System.out.println(reportPart.getContent().getAbsolutePath());
             int i = stub.uploadFile(reportPart);
             return i;
         } catch (RemoteException | NotBoundException ex) {
