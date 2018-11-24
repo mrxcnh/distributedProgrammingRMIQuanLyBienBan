@@ -76,7 +76,7 @@ public class ReportController {
         return reportModel.deleteReport(reportId);
     }
     
-    public void exportReportToWord(int reportId) {
+    public void exportReportToWord(int reportId, String content) {
         String templateFolder = (System.getProperty("user.dir").substring(0, System.getProperty("user.dir").indexOf("QuanLyBienBan" + System.getProperty("file.separator")) + ("QuanLyBienBan" + System.getProperty("file.separator")).length())) +  "template";
         Report report = reportModel.getReport(reportId);
         int meetingId = meetingModel.getMeetingId(reportId);
@@ -85,12 +85,12 @@ public class ReportController {
         final File folder = new File(templateFolder);
         ArrayList<String> templatesArayList = listAllTemplate(folder);
         if (templatesArayList == null || templatesArayList.size() == 0) {
-            JOptionPane.showMessageDialog(null, "Không có template có sẵn nào");
+            JOptionPane.showMessageDialog(null, "Dont have any template!");
             return ;
         }
         String[] templates = templatesArayList.toArray(new String[templatesArayList.size()]);
-        int x = JOptionPane.showOptionDialog(null, "Bạn hãy lựa chọn 1 template",
-                "Chọn template",
+        int x = JOptionPane.showOptionDialog(null, "Choose a template!",
+                "Choose template",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, templates, templates[0]);
         String template = templates[x];
 
@@ -100,7 +100,7 @@ public class ReportController {
             System.out.println("Can't open template " + template);
             return ;
         }
-        String content = report.getReportContent();
+//        String content = report.getReportContent();
         String[] lines = content.split("\n");
         String member ="";
         List<String> endTime= new ArrayList<>();
@@ -129,17 +129,17 @@ public class ReportController {
         doc = HWPFTest.replaceText(doc, "MONTH_MEETING", dayMs[1]);
         doc = HWPFTest.replaceText(doc, "YEAR_MEETING", dayMs[0]);
         doc = HWPFTest.replaceText(doc, "REPORT_NAME", report.getReportName());
-        doc = HWPFTest.replaceText(doc, "REPORT_CONTENT", report.getReportContent());
+        doc = HWPFTest.replaceText(doc, "REPORT_CONTENT", content);
         doc = HWPFTest.replaceText(doc, "SECRETARY", report.getAuthors());
 
         String exportFolder = (System.getProperty("user.dir").substring(0, System.getProperty("user.dir").indexOf("QuanLyBienBan" + System.getProperty("file.separator")) + ("QuanLyBienBan" + System.getProperty("file.separator")).length())) +  "export";
         String reportFileName = report.getReportName() + "[" + new SimpleDateFormat("dd_MM_yyyy hh_mm").format(new Date()) + "].doc";
         if(HWPFTest.saveDocument(exportFolder + System.getProperty("file.separator") +  reportFileName, doc)){
-            if (JOptionPane.showConfirmDialog(null, "Xuất file " +reportFileName +" thành công!\n" +"Bạn có muốn mở không ?") == JOptionPane.YES_OPTION) {
+            if (JOptionPane.showConfirmDialog(null, "Export file " +reportFileName +" successful!\n" +"Open?") == JOptionPane.YES_OPTION) {
                 openFile(exportFolder + System.getProperty("file.separator") +  reportFileName);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
+            JOptionPane.showMessageDialog(null, "Failed! Try again!");
         }
 
 
@@ -152,7 +152,7 @@ public class ReportController {
                 Desktop.getDesktop().open(myFile);
             }
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi mở file " + filePath + "\n" + ex, "ERROR", 2);
+            JOptionPane.showMessageDialog(null, "Open file failed: " + filePath + "\n" + ex, "ERROR", 2);
         }
 
     }

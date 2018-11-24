@@ -455,6 +455,9 @@ public class GUIStaffClient extends javax.swing.JFrame {
         this.meetingIdTF.setText(GUIStaffClient.meetingTable.getValueAt(row, 0).toString());
         this.meetingTitleTF.setText(GUIStaffClient.meetingTable.getValueAt(row, 1).toString());
         this.filePreviewTextArea.setText("");
+        this.jTextArea1.setText("");
+        this.fileNameTextField.setText("");
+        this.buttonGroup1.clearSelection();
         List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
         List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
         List<ReportPart> listReportPartTr = reportPartController.getReportPartIds(2, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
@@ -578,6 +581,9 @@ public class GUIStaffClient extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(rootPane, "Already have a transcript! Remove it first!");
                         try {
                                 remoteStaffImpl.h.updateStatus(meetingId, 0);
+                                this.jTextArea1.setText("");
+                                this.fileNameTextField.setText("");
+                                this.buttonGroup1.clearSelection();
                             } catch (RemoteException ex) {
                                 Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -705,6 +711,10 @@ public class GUIStaffClient extends javax.swing.JFrame {
     private void deleteUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteUploadButtonActionPerformed
         int row = GUIStaffClient.reportPartTable.getSelectedRow();
         int meetingRow = GUIStaffClient.meetingTable.getSelectedRow();
+        if(meetingRow == -1){
+            JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
+            return;
+        }
         int meetingId = Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(meetingRow, 0).toString().substring(3));
         if(row == -1){
             JOptionPane.showMessageDialog(rootPane, "Choose a report part file first!");
@@ -796,13 +806,13 @@ public class GUIStaffClient extends javax.swing.JFrame {
                     GUIStaffClient.this.meetingIdTF.setText("");
                     GUIStaffClient.this.meetingTitleTF.setText("");
                     GUIStaffClient.this.jLabel8.setText("Loaded new changes!");
-                            Timer timer = new Timer();
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    GUIStaffClient.this.jLabel8.setText("");
-                                }
-                            }, 5000);
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            GUIStaffClient.this.jLabel8.setText("");
+                        }
+                    }, 5000);
                 }
             });
         }

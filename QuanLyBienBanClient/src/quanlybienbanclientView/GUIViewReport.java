@@ -532,6 +532,14 @@ public class GUIViewReport extends javax.swing.JFrame {
     }//GEN-LAST:event_reportContentTextAreaCaretUpdate
 
     private void deleteReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteReportButtonActionPerformed
+        if (meeting.getUserCreateId() != GUIManagerClient.user.getId()){
+            JOptionPane.showMessageDialog(rootPane, "You can not delete this report!");
+            return;
+        }
+        if(reportSelected == null){
+            JOptionPane.showMessageDialog(rootPane, "Select report first!");
+            return;
+        }
         if(JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "", JOptionPane.YES_NO_OPTION) == 0){
             if(reportController.getIdOfUserEdit(reportSelected.getId()).isEmpty()){
                 int result = reportController.deleteReport(reportSelected.getId());
@@ -558,11 +566,6 @@ public class GUIViewReport extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Select a report first!");
             return;
         }
-        List<Integer> userIds = reportController.getIdOfUserEdit(reportSelected.getId());
-        if (!userIds.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Someone editting this! Cannot export!");
-            return;
-        }
         exportToWord();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -570,7 +573,7 @@ public class GUIViewReport extends javax.swing.JFrame {
         if (reportSelected == null) {
             JOptionPane.showMessageDialog(null, "Select a report first!");
         } else if (JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "", JOptionPane.YES_NO_OPTION) == 0) {
-            reportController.exportReportToWord(reportSelected.getId());
+            reportController.exportReportToWord(reportSelected.getId(), GUIViewReport.reportContentTextArea.getText());
         }
     }
     

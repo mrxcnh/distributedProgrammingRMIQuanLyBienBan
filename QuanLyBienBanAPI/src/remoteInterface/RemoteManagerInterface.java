@@ -21,4 +21,5 @@ public interface RemoteManagerInterface extends Remote {
     public void updateReporterComboBox(int meetingId) throws RemoteException;
     public void updateReporterTable(int meetingId) throws RemoteException;
     public void updateUserNotSharedYet(int meetingId) throws RemoteException;
+    public void managerUpdateStatus(int type) throws RemoteException;
 }

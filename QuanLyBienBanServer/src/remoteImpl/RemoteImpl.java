@@ -74,7 +74,11 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     public String printMsg(String msg) throws RemoteException{
         for (int i = 0; i < testClients.size() ; i++){
             TestRemoteClientInterface rci = (TestRemoteClientInterface)testClients.elementAt(i);
-            rci.printmsg(msg);
+            try{
+                rci.printmsg(msg);
+            }catch(RemoteException e){
+                removeRemoteClientInterface(rci);
+            }
         }
         return msg;
     }
@@ -90,28 +94,55 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     public void updateMeetingTable(List<Meeting> list) throws RemoteException{
         for (int i = 0; i < managerClients.size() ; i++){
             RemoteManagerInterface rm = (RemoteManagerInterface)managerClients.elementAt(i);
-            rm.updateMeetingTable(list);
+            try{
+                rm.updateMeetingTable(list);
+            }catch(RemoteException e){
+                removeRemoteManagerInterface(rm);
+            }
+        }
+    }
+    @Override
+    public void managerUpdateStatus(int type) throws RemoteException{
+        for (int i = 0; i < managerClients.size() ; i++){
+            RemoteManagerInterface rm = (RemoteManagerInterface)managerClients.elementAt(i);
+            try{
+                rm.managerUpdateStatus(type);
+            }catch(RemoteException e){
+                removeRemoteManagerInterface(rm);
+            }
         }
     }
     @Override
     public void updateReporterComboBox(int meetingId) throws RemoteException{
         for (int i = 0; i < managerClients.size() ; i++){
             RemoteManagerInterface rm = (RemoteManagerInterface)managerClients.elementAt(i);
-            rm.updateReporterComboBox(meetingId);
+            try{
+                rm.updateReporterComboBox(meetingId);
+            }catch(RemoteException e){
+                removeRemoteManagerInterface(rm);
+            }
         }
     }
     @Override
     public void updateUserSharedComboBox(int meetingId) throws RemoteException{
         for (int i = 0; i < managerClients.size() ; i++){
             RemoteManagerInterface rm = (RemoteManagerInterface)managerClients.elementAt(i);
-            rm.updateUserNotSharedYet(meetingId);
+            try{
+                rm.updateUserNotSharedYet(meetingId);
+            }catch(RemoteException e){
+                removeRemoteManagerInterface(rm);
+            }
         }
     }
     @Override
     public void updateReporterTable(int meetingId) throws RemoteException{
         for (int i = 0; i < managerClients.size() ; i++){
             RemoteManagerInterface rm = (RemoteManagerInterface)managerClients.elementAt(i);
-            rm.updateReporterTable(meetingId);
+            try{
+                rm.updateReporterTable(meetingId);
+            }catch(RemoteException e){
+                removeRemoteManagerInterface(rm);
+            }
         }
     }
     @Override
@@ -126,7 +157,11 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     public void adminUpdateUserTable(List<User> list) throws RemoteException{
         for (int i = 0; i < adminClients.size() ; i++){
             RemoteAdminInterface ra = (RemoteAdminInterface)adminClients.elementAt(i);
-            ra.adminUpdateUserTable(list);
+            try{
+                ra.adminUpdateUserTable(list);
+            }catch(RemoteException e){
+                removeRemoteAdminInterface(ra);
+            }
         }
     }
     @Override
@@ -141,21 +176,33 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     public void staffUpdateMeetingTable(List<Meeting> list) throws RemoteException{
         for (int i = 0; i < staffClients.size() ; i++){
             RemoteStaffInterface rs = (RemoteStaffInterface)staffClients.elementAt(i);
-            rs.updateMeetingTable(list);
+            try{
+                rs.updateMeetingTable(list);
+            }catch(RemoteException e){
+                removeRemoteStaffInterface(rs);
+            }
         }
     }
     @Override
     public void staffUpdateReportPartTable(List<ReportPart> list, int meetingId, String userUpload) throws RemoteException{
         for (int i = 0; i < staffClients.size() ; i++){
             RemoteStaffInterface rs = (RemoteStaffInterface)staffClients.elementAt(i);
-            rs.updateReportPartTable(list, meetingId, userUpload);
+            try{
+                rs.updateReportPartTable(list, meetingId, userUpload);
+            }catch(RemoteException e){
+                removeRemoteStaffInterface(rs);
+            }
         }
     }
     @Override
     public void updateStatus(int meetingId, int stat) throws RemoteException{
         for (int i = 0; i < staffClients.size() ; i++){
             RemoteStaffInterface rs = (RemoteStaffInterface)staffClients.elementAt(i);
-            rs.updateStatus(meetingId, stat);
+            try{
+                rs.updateStatus(meetingId, stat);
+            }catch(RemoteException e){
+                removeRemoteStaffInterface(rs);
+            }
         }
     }
     @Override
@@ -170,35 +217,51 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     public void updateUserEdittingTable(List<User> list, int reportId) throws RemoteException{
         for (int i = 0; i < reportClients.size() ; i++){
             RemoteReportInterface rr = (RemoteReportInterface)reportClients.elementAt(i);
-            rr.updateUserEdittingTable(list, reportId);
+            try{
+                rr.updateUserEdittingTable(list, reportId);
+            }catch(RemoteException e){
+                removeRemoteReportInterface(rr);
+            }
         }
     }
     @Override
     public void updateReportTable(List<Report> list) throws RemoteException {
         for (int i = 0; i < reportClients.size() ; i++){
             RemoteReportInterface rr = (RemoteReportInterface)reportClients.elementAt(i);
-            rr.updateReportTable(list);
+            try{
+                rr.updateReportTable(list);
+            }catch(RemoteException e){
+                removeRemoteReportInterface(rr);
+            }
         }
     }
     @Override
     public void updateReportContent(String content, int reportId) throws RemoteException {
         for (int i = 0; i < reportClients.size() ; i++){
             RemoteReportInterface rr = (RemoteReportInterface)reportClients.elementAt(i);
-            rr.updateReportContent(content, reportId);
+            try{
+                rr.updateReportContent(content, reportId);
+            }catch(RemoteException e){
+                removeRemoteReportInterface(rr);
+            }
         }
     }
     @Override
     public void updatePermissionTable(List<User> list, Meeting meeting) throws RemoteException{
         for (int i = 0; i < managerClients.size() ; i++){
             RemoteManagerInterface rm = (RemoteManagerInterface)managerClients.elementAt(i);
-            rm.updatePermissionTable(list, meeting);
+            try{
+                rm.updatePermissionTable(list, meeting);
+            }catch(RemoteException e){
+                removeRemoteManagerInterface(rm);
+            }
         }
     }
 // end for callback
 
 // Remote Implement for user
     @Override
-    public List<User> getUsers() throws RemoteException {
+    public synchronized List<User> getUsers() throws RemoteException {
         List<User> users = new ArrayList<>();
         Statement stmt;
         String sql = "select * from users";
@@ -233,7 +296,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return users;
     }
     @Override
-    public User getUser(String username, String password) throws RemoteException {
+    public synchronized User getUser(String username, String password) throws RemoteException {
         User user = new User();
         String sql = "select * from users where username = ? and password = ?";
         try {
@@ -265,7 +328,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return user;
     }
     @Override
-    public int addUser(User user) throws RemoteException {
+    public synchronized int addUser(User user) throws RemoteException {
         String sql = "INSERT INTO users (username, password, fullname, position) VALUES "
                 +"('"+ user.getUsername() +"' ,'"+user.getPassword() + "', '"+ user.getFullname()+"', '"+user.getPosition()+"');";
         try {
@@ -280,7 +343,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public User getUser(int id) throws RemoteException {
+    public synchronized User getUser(int id) throws RemoteException {
         User user = new User();
         String sql = "select * from users where id = ?";
         try {
@@ -310,7 +373,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return user;
     }
     @Override
-    public int editUser(User user) throws RemoteException {
+    public synchronized int editUser(User user) throws RemoteException {
         String sql = "update users set username = ?, password = ?, fullname = ?, position = ? where id = ?;";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -329,7 +392,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int deleteUser(User user) throws RemoteException {
+    public synchronized int deleteUser(User user) throws RemoteException {
         String sql = "DELETE FROM users WHERE users.id = ?;";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -347,7 +410,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     
 // Remote Implement for Meeting
     @Override
-    public List<Meeting> getMeetings() throws RemoteException {
+    public synchronized List<Meeting> getMeetings() throws RemoteException {
         List<Meeting> list = new ArrayList<>();
         Statement stmt;
         String sql = "select * from meetings";
@@ -379,7 +442,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return list;
     }
     @Override
-    public int addMeeting(Meeting meeting) throws RemoteException {     
+    public synchronized int addMeeting(Meeting meeting) throws RemoteException {     
         String sql = "INSERT INTO meetings (meetingTitle, meetingDate, timeStart, userCreateId) VALUES (?, ?, ?, ?);";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -398,7 +461,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int editMeeting(Meeting meeting) throws RemoteException {
+    public synchronized int editMeeting(Meeting meeting) throws RemoteException {
         
         String sql = "update meetings set meetingTitle = ?, meetingDate = ?, timeStart = ? where id = ?;";
         try {
@@ -417,7 +480,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int getMeetingId(int reportId) throws RemoteException{
+    public synchronized int getMeetingId(int reportId) throws RemoteException{
         String sql = "select * from reports where id = ?";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -436,7 +499,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public Meeting getMeeting(int meetingId) throws RemoteException {
+    public synchronized Meeting getMeeting(int meetingId) throws RemoteException {
         Meeting meeting = new Meeting();
         String sql = "select * from meetings where id = ?";
         try {
@@ -467,7 +530,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return meeting;
     }
     @Override
-    public int deleteMeeting(Meeting meeting) throws RemoteException {
+    public synchronized int deleteMeeting(Meeting meeting) throws RemoteException {
         
         String sql = "DELETE FROM meetings WHERE meetings.id = ?;";
         try {
@@ -483,7 +546,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }  
     @Override
-    public int addReporter(User user, Meeting meeting) throws RemoteException{
+    public synchronized int addReporter(User user, Meeting meeting) throws RemoteException{
         String sql = "INSERT INTO userpermission (userId, meetingId, permission) VALUES ( ?, ?, 'u');";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -499,7 +562,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public List<Integer> getReporterIds(int meetingId) throws RemoteException{
+    public synchronized List<Integer> getReporterIds(int meetingId) throws RemoteException{
         List<Integer> list = new ArrayList<>();
         String sql = "select * from userpermission where meetingId = ? and permission = ?";
         PreparedStatement stmt;
@@ -524,7 +587,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return list;
     }
     @Override
-    public int deleteReporter(User user, Meeting meeting) throws RemoteException{
+    public synchronized int deleteReporter(User user, Meeting meeting) throws RemoteException{
         
         String sql = "DELETE FROM userpermission WHERE userId = ? and meetingId = ? and permission = 'u';";
         try {
@@ -541,7 +604,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int getMeetingCreatorId(Meeting meeting) throws RemoteException{
+    public synchronized int getMeetingCreatorId(Meeting meeting) throws RemoteException{
         
         String sql = "select * from meetings where id = ?";
         try {
@@ -564,12 +627,12 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
 
     // Server status
     @Override
-    public void clientLogoutMessage(User user) throws RemoteException {
+    public synchronized void clientLogoutMessage(User user) throws RemoteException {
         GUIServer.jTextArea1.append("Client " + user.getUsername() + " logged out! \n");
     }
 // Remote Implement for file
     @Override
-    public int uploadFile(ReportPart reportPart) throws RemoteException{
+    public synchronized int uploadFile(ReportPart reportPart) throws RemoteException{
         String sql = "insert into reportparts (meetingId, fileName, type, reportPartContent) values (?, ?, ?, ?);";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -588,7 +651,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     }
     
     @Override
-    public int deleteReportPart(int reportPartId) throws RemoteException{
+    public synchronized int deleteReportPart(int reportPartId) throws RemoteException{
         
         String sql = "DELETE FROM reportparts WHERE id = ?;";
         try {
@@ -604,7 +667,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public List<ReportPart> getReportParts(int i, int y) throws RemoteException {
+    public synchronized List<ReportPart> getReportParts(int i, int y) throws RemoteException {
         final int PERSONCONTENT = 0, CONTENTTIME=1;
         List<ReportPart> list = new ArrayList<>();
         PreparedStatement stmt;
@@ -640,7 +703,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return list;
     }
     @Override
-    public String getReportPartContent(int reportPartId) throws RemoteException{
+    public synchronized String getReportPartContent(int reportPartId) throws RemoteException{
         
         PreparedStatement stmt = null;
         String sql = "select * from reportparts where id = ?";
@@ -662,7 +725,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return out;
     }
     @Override
-    public int deleteReportParts(int meetingId) throws RemoteException{
+    public synchronized int deleteReportParts(int meetingId) throws RemoteException{
         String sql = "DELETE FROM reportparts WHERE meetingId = ?;";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -679,7 +742,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
     // end Remote Implement for file
 // Remote implement for report
     @Override
-    public int addReport(Report report) throws RemoteException{
+    public synchronized int addReport(Report report) throws RemoteException{
         
         String sql = "INSERT INTO reports (meetingId, reportName, reportContent, timeCreate, authors) VALUES (?, ?, ?, ?, ?);";
        
@@ -704,7 +767,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public Report getReport(int reportId) throws RemoteException{
+    public synchronized Report getReport(int reportId) throws RemoteException{
         Report report = new Report();
         PreparedStatement stmt;
         String sql = "select * from reports where id = ?";
@@ -736,7 +799,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return null;
     }
     @Override
-    public int generateReport(Report report, Meeting meeting) throws RemoteException {
+    public synchronized int generateReport(Report report, Meeting meeting) throws RemoteException {
         String reportContent = "";
         Collections.sort(report.getPersonContentTimes());
         for (PersonContentTime pct: report.getPersonContentTimes()){
@@ -765,7 +828,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public List<Report> getReports(int meetingId) throws RemoteException {
+    public synchronized List<Report> getReports(int meetingId) throws RemoteException {
         List<Report> listReport = new ArrayList<>();
         PreparedStatement stmt;
         String sql = "select * from reports where meetingId = ?";
@@ -798,7 +861,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return null;
     }
     @Override
-    public String getReportContent(int reportId) throws RemoteException {
+    public synchronized String getReportContent(int reportId) throws RemoteException {
         PreparedStatement stmt = null;
         String sql = "select * from reports where id = ?";
         String out="";
@@ -819,7 +882,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return out;
     }
     @Override
-    public int addPeopleEdit(PeopleEditReport per) throws RemoteException {
+    public synchronized int addPeopleEdit(PeopleEditReport per) throws RemoteException {
         String sql = "INSERT INTO peopleeditreport (reportId, userId) VALUES ( ?, ?);";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -835,7 +898,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public List<Integer> getIdOfUserEdit(int reportId) throws RemoteException {
+    public synchronized List<Integer> getIdOfUserEdit(int reportId) throws RemoteException {
         PreparedStatement stmt = null;
         String sql = "select * from peopleeditreport where reportId = ?";
         List<Integer> list= new ArrayList<>();
@@ -855,7 +918,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return null;
     }
     @Override
-    public int getPeopleEdit(PeopleEditReport per) throws RemoteException {
+    public synchronized int getPeopleEdit(PeopleEditReport per) throws RemoteException {
         PreparedStatement stmt = null;
         String sql = "select * from peopleeditreport where reportId = ? and userId = ?";
         int out;
@@ -876,7 +939,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int removePeopleEdit(int peopleEditId) throws RemoteException{
+    public synchronized int removePeopleEdit(int peopleEditId) throws RemoteException{
         PreparedStatement stmt;
         String sql = "DELETE FROM peopleeditreport WHERE id = ?";
         int out;
@@ -893,7 +956,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int deleteReports(int meetingId) throws RemoteException{
+    public synchronized int deleteReports(int meetingId) throws RemoteException{
         String sql = "DELETE FROM reports WHERE meetingId = ?;";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -908,7 +971,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int deleteReport(int reportId) throws RemoteException{
+    public synchronized int deleteReport(int reportId) throws RemoteException{
         String sql = "DELETE FROM reports WHERE id = ?;";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -948,7 +1011,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return null;
     }
     @Override
-    public int addPermission(User user, Meeting meeting, String permission) throws RemoteException{
+    public synchronized int addPermission(User user, Meeting meeting, String permission) throws RemoteException{
         String sql = "INSERT INTO userpermission (userId, meetingId, permission) VALUES (?, ?, ?);";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -965,7 +1028,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int deletePermission(int meetingId) throws RemoteException{
+    public synchronized int deletePermission(int meetingId) throws RemoteException{
         String sql = "DELETE FROM userpermission WHERE meetingId = ?;";
         try {
             Connection conn = ConnectDB.connectDB();
@@ -980,7 +1043,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         return 0;
     }
     @Override
-    public int deletePermission(int userId, int meetingId) throws RemoteException{
+    public synchronized int deletePermission(int userId, int meetingId) throws RemoteException{
         String sql = "DELETE FROM userpermission WHERE meetingId = ? and userId = ?;";
         try {
             Connection conn = ConnectDB.connectDB();
