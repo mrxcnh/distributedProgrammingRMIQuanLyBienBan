@@ -313,6 +313,10 @@ public class GUIStaffClient extends javax.swing.JFrame {
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Transcript");
 
+        jLabel8.setForeground(new java.awt.Color(242, 27, 21));
+
+        jLabel9.setForeground(new java.awt.Color(215, 32, 13));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -803,9 +807,7 @@ public class GUIStaffClient extends javax.swing.JFrame {
                         }
                     }
                     GUIStaffClient.updateMeetingTable(listHavePermission);
-                    GUIStaffClient.this.meetingIdTF.setText("");
-                    GUIStaffClient.this.meetingTitleTF.setText("");
-                    GUIStaffClient.this.jLabel8.setText("Loaded new changes!");
+                    GUIStaffClient.this.jLabel8.setText("Loaded all changes!");
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override

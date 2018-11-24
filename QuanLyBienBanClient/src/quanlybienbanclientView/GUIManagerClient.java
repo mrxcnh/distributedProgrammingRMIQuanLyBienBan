@@ -436,6 +436,10 @@ public class GUIManagerClient extends javax.swing.JFrame {
 
         jLabel4.setText("Id");
 
+        jLabel5.setForeground(new java.awt.Color(243, 33, 35));
+
+        jLabel6.setForeground(new java.awt.Color(231, 23, 9));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -593,51 +597,52 @@ public class GUIManagerClient extends javax.swing.JFrame {
         
         this.userSharedComboBox.removeAllItems();
         int row = GUIManagerClient.jTable1.getSelectedRow();
-        int meetingId = Integer.parseInt(GUIManagerClient.jTable1.getValueAt(row, 0).toString().substring(3));
-        this.jLabel5.setText(GUIManagerClient.jTable1.getValueAt(row, 0).toString());
-        meetingSelected = meetingController.getMeeting(meetingId);
-        List<User> us = this.getUserDontHavePermission(meetingSelected);
-        for (User u : us){
-            this.userSharedComboBox.addItem(u.getId()+" - "+u.getUsername()+" - "+u.getPosition());
-        }
-        this.meetingText.setText(meetingSelected.getTitle());
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(meetingSelected.getDate());
-        this.dateChooserCombo1.setSelectedDate(cal);
-        this.timeText.setText(meetingSelected.getTimeStart().toString());
-
-        //
-        this.selectReporterComboBox.removeAllItems();
-        List<Integer> reporterIds = meetingController.getReporterIds(meetingId);
-        List<User> reporters = new ArrayList<>();
-        if (reporterIds != null){
-            for (Integer reporterId : reporterIds){
-
-                User reporter = userController.getUser(reporterId);
-                reporters.add(reporter);
+        if (row != -1){
+            int meetingId = Integer.parseInt(GUIManagerClient.jTable1.getValueAt(row, 0).toString().substring(3));
+            this.jLabel5.setText(GUIManagerClient.jTable1.getValueAt(row, 0).toString());
+            meetingSelected = meetingController.getMeeting(meetingId);
+            List<User> us = this.getUserDontHavePermission(meetingSelected);
+            for (User u : us){
+                this.userSharedComboBox.addItem(u.getId()+" - "+u.getUsername()+" - "+u.getPosition());
             }
-        }
-        GUIManagerClient.updateReporterTable(reporters);
+            this.meetingText.setText(meetingSelected.getTitle());
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(meetingSelected.getDate());
+            this.dateChooserCombo1.setSelectedDate(cal);
+            this.timeText.setText(meetingSelected.getTimeStart().toString());
 
-        List<Integer> userIds = new ArrayList<>();
-        List<User> users = userController.getUsers();
-        GUIManagerClient.updateListPermission(users, meetingSelected);
-        for (User u : users){
-            userIds.add(u.getId());
-        }
+            //
+            this.selectReporterComboBox.removeAllItems();
+            List<Integer> reporterIds = meetingController.getReporterIds(meetingId);
+            List<User> reporters = new ArrayList<>();
+            if (reporterIds != null){
+                for (Integer reporterId : reporterIds){
 
-        userIds.removeAll(reporterIds);
-        for (int i : userIds){
-            User u = userController.getUser(i);
-            if("staff".equals(u.getPosition())){
-                        this.selectReporterComboBox.addItem(u.getId()+" - "+u.getUsername() + " - " + u.getPosition());
+                    User reporter = userController.getUser(reporterId);
+                    reporters.add(reporter);
+                }
+            }
+            GUIManagerClient.updateReporterTable(reporters);
+
+            List<Integer> userIds = new ArrayList<>();
+            List<User> users = userController.getUsers();
+            GUIManagerClient.updateListPermission(users, meetingSelected);
+            for (User u : users){
+                userIds.add(u.getId());
+            }
+
+            userIds.removeAll(reporterIds);
+            for (int i : userIds){
+                User u = userController.getUser(i);
+                if("staff".equals(u.getPosition())){
+                            this.selectReporterComboBox.addItem(u.getId()+" - "+u.getUsername() + " - " + u.getPosition());
+                }
             }
         }
     }//GEN-LAST:event_jTable1MousePressed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        int row = GUIManagerClient.jTable1.getSelectedRow();
-        if(row == -1){
+        if(meetingSelected == null){
             JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
             return;
         }
@@ -736,10 +741,11 @@ public class GUIManagerClient extends javax.swing.JFrame {
                     return;
                 }
                 Meeting meetingx = new Meeting();
-                meetingx.setId(Integer.parseInt(GUIManagerClient.jTable1.getValueAt(GUIManagerClient.jTable1.getSelectedRow(), 0).toString().substring(3)));
+                meetingx.setId(meetingSelected.getId());
                 meetingx.setTitle(title);
                 meetingx.setDate(sqlDate);
                 meetingx.setTimeStart(timeStart);
+                meetingSelected = null;
                 int i = meetingController.editMeeting(meetingx);
                 if (i > 0){
                     JOptionPane.showMessageDialog(rootPane, "Success!");
@@ -757,9 +763,9 @@ public class GUIManagerClient extends javax.swing.JFrame {
                     GUIManagerClient.selectReporterComboBox.removeAllItems();
                     this.userSharedComboBox.removeAllItems();
                     this.buttonGroup1.clearSelection();
+                    GUIManagerClient.updateReporterTable(null);
+                    GUIManagerClient.updateListPermission(null, meetingx);
                     try {
-                        remoteManagerImpl.h.updateReporterTable(0);
-                        remoteManagerImpl.h.updatePermissionTable(null, meetingx);
                         remoteManagerImpl.h.managerUpdateStatus(1);
                     } catch (RemoteException ex) {
                         Logger.getLogger(GUIManagerClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -774,16 +780,16 @@ public class GUIManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void addMeetingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMeetingButtonActionPerformed
+        String title = this.meetingText.getText();
+        Calendar cal = this.dateChooserCombo1.getSelectedDate();
+        Date date = cal.getTime();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        String timeStart = this.timeText.getText();
+        if("".equals(title) || "".equals(timeStart)){
+            JOptionPane.showMessageDialog(rootPane, "These fields are required");
+            return;
+        }
         if(JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "", JOptionPane.YES_NO_OPTION) == 0){
-            String title = this.meetingText.getText();
-            Calendar cal = this.dateChooserCombo1.getSelectedDate();
-            Date date = cal.getTime();
-            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            String timeStart = this.timeText.getText();
-            if("".equals(title) || "".equals(timeStart)){
-                JOptionPane.showMessageDialog(rootPane, "These fields are required");
-                return;
-            }
             String time = "";
             String[] timeSyntax = timeStart.split("\\:");
             if(timeSyntax.length == 3){
@@ -874,6 +880,7 @@ public class GUIManagerClient extends javax.swing.JFrame {
             meeting.setUserCreateId(GUIManagerClient.user.getId());
             MeetingController meetingController = new MeetingController();
             int i = meetingController.addMeeting(meeting);
+            meetingSelected = null;
             if (i > 0){
                 JOptionPane.showMessageDialog(rootPane, "Success!");
                 List<Meeting> list = meetingController.getMeetings();
@@ -889,9 +896,9 @@ public class GUIManagerClient extends javax.swing.JFrame {
                 GUIManagerClient.selectReporterComboBox.removeAllItems();
                 this.userSharedComboBox.removeAllItems();
                 this.buttonGroup1.clearSelection();
+                GUIManagerClient.updateReporterTable(null);
+                GUIManagerClient.updateListPermission(null, meeting);
                 try {
-                    remoteManagerImpl.h.updateReporterTable(0);
-                    remoteManagerImpl.h.updatePermissionTable(null, meeting);
                     remoteManagerImpl.h.managerUpdateStatus(1);
                 } catch (RemoteException ex) {
                     Logger.getLogger(GUIManagerClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -918,64 +925,61 @@ public class GUIManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int rowSelected = GUIManagerClient.jTable1.getSelectedRow();
-        if (rowSelected > -1){
-            int meetingId = Integer.parseInt(GUIManagerClient.jTable1.getValueAt(rowSelected, 0).toString().substring(3));
-            if (meetingSelected.getUserCreateId() == GUIManagerClient.user.getId()){
-                if(JOptionPane.showConfirmDialog(rootPane, "Are you sure?","",JOptionPane.YES_NO_OPTION) == 0){
-                    Meeting delmeeting = meetingController.getMeeting(meetingId);
-                    permissionController.deletePermission(meetingId);
-                    reportController.deleteReports(meetingId);
-                    reportPartController.deleteReportParts(meetingId);
-                    int result = meetingController.deleteMeeting(delmeeting);
-                    if (result > 0){
-                        JOptionPane.showMessageDialog(rootPane, "Deleted!");
-                        List<Meeting> list = meetingController.getMeetings();
-                        GUIManagerClient.updateTable(list);
-                        try {
-                            remoteManagerImpl.h.updateMeetingTable(list);
-                            remoteManagerImpl.h.staffUpdateMeetingTable(list);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger("Khong update duoc table!");
-                        }
-                        this.jLabel5.setText("");
-                        this.meetingText.setText("");
-                        this.timeText.setText("HH:mm:ss");
-                        GUIManagerClient.jTable1.clearSelection();
-                        GUIManagerClient.selectReporterComboBox.removeAllItems();
-                        this.userSharedComboBox.removeAllItems();
-                        this.buttonGroup1.clearSelection();
-                        try {
-                            remoteManagerImpl.h.updateReporterTable(0);
-                            remoteManagerImpl.h.updatePermissionTable(null, delmeeting);
-                            remoteManagerImpl.h.managerUpdateStatus(1);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(GUIManagerClient.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else
-                        JOptionPane.showMessageDialog(rootPane, "Something's happened! Try again!");
-                }
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "You can not delete this meeting!");
-            }
-        }
-        else
+        if (meetingSelected==null){
             JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
+            return;
+        }
+        if (meetingSelected.getUserCreateId() == GUIManagerClient.user.getId()){
+            if(JOptionPane.showConfirmDialog(rootPane, "Are you sure?","",JOptionPane.YES_NO_OPTION) == 0){
+                Meeting delmeeting = meetingController.getMeeting(meetingSelected.getId());
+                permissionController.deletePermission(meetingSelected.getId());
+                reportController.deleteReports(meetingSelected.getId());
+                reportPartController.deleteReportParts(meetingSelected.getId());
+                meetingSelected = null;
+                int result = meetingController.deleteMeeting(delmeeting);
+                if (result > 0){
+                    JOptionPane.showMessageDialog(rootPane, "Deleted!");
+                    List<Meeting> list = meetingController.getMeetings();
+                    GUIManagerClient.updateTable(list);
+                    try {
+                        remoteManagerImpl.h.updateMeetingTable(list);
+                        remoteManagerImpl.h.staffUpdateMeetingTable(list);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger("Khong update duoc table!");
+                    }
+                    this.jLabel5.setText("");
+                    this.meetingText.setText("");
+                    this.timeText.setText("HH:mm:ss");
+                    GUIManagerClient.jTable1.clearSelection();
+                    GUIManagerClient.selectReporterComboBox.removeAllItems();
+                    this.userSharedComboBox.removeAllItems();
+                    this.buttonGroup1.clearSelection();
+                    GUIManagerClient.updateReporterTable(null);
+                    GUIManagerClient.updateListPermission(null, delmeeting);
+                    try {
+                        remoteManagerImpl.h.managerUpdateStatus(1);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(GUIManagerClient.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else
+                    JOptionPane.showMessageDialog(rootPane, "Something's happened! Try again!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "You can not delete this meeting!");
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void viewReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReportButtonActionPerformed
-        int row = GUIManagerClient.jTable1.getSelectedRow();
-        if (row == -1){
+        if (meetingSelected == null){
             JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
         } else {
-            int meetingId = Integer.parseInt(GUIManagerClient.jTable1.getValueAt(row, 0).toString().substring(3));
             if (meetingSelected.getUserCreateId() == GUIManagerClient.user.getId() || "r".equals(permissionController.getPermission(user, meetingSelected))){
-                List<Report> reports = reportController.getReports(meetingId);
+                List<Report> reports = reportController.getReports(meetingSelected.getId());
                 if(reports.isEmpty()){
                     JOptionPane.showMessageDialog(rootPane, "Haven't have report yet! Generate report first!");
                     return;
                 }
-                GUIViewReport.meeting = meetingController.getMeeting(meetingId);
+                GUIViewReport.meeting = meetingController.getMeeting(meetingSelected.getId());
                 GUIViewReport.user= GUIManagerClient.user;
                 GUIViewReport viewReport = new GUIViewReport();
                 viewReport.setVisible(true);
@@ -993,25 +997,20 @@ public class GUIManagerClient extends javax.swing.JFrame {
         this.jLabel5.setText("");
         this.meetingText.setText("");
         this.timeText.setText("HH:mm:ss");
+        meetingSelected=null;
         GUIManagerClient.jTable1.clearSelection();
         GUIManagerClient.selectReporterComboBox.removeAllItems();
         this.userSharedComboBox.removeAllItems();
         this.buttonGroup1.clearSelection();
-        try {
-            remoteManagerImpl.h.updateReporterTable(0);
-            remoteManagerImpl.h.updatePermissionTable(null, new Meeting());
-        } catch (RemoteException ex) {
-            Logger.getLogger(GUIManagerClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GUIManagerClient.updateReporterTable(null);
+        GUIManagerClient.updateListPermission(null, new Meeting());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void addReporterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addReporterButtonActionPerformed
-        int row = GUIManagerClient.jTable1.getSelectedRow();
-        if(row == -1){
+        if(meetingSelected == null){
             JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
             return;
         }
-        int meetingId = Integer.parseInt(GUIManagerClient.jTable1.getValueAt(row, 0).toString().substring(3));
         if (meetingSelected.getUserCreateId() == GUIManagerClient.user.getId()){
             int endPosition = GUIManagerClient.selectReporterComboBox.getItemAt(GUIManagerClient.selectReporterComboBox.getSelectedIndex()).indexOf("-");
             String selected = GUIManagerClient.selectReporterComboBox.getItemAt(GUIManagerClient.selectReporterComboBox.getSelectedIndex()).substring(0,endPosition).replaceAll(" ","");
@@ -1033,7 +1032,7 @@ public class GUIManagerClient extends javax.swing.JFrame {
             try {
                 remoteManagerImpl.h.updateReporterComboBox(meetingSelected.getId());
                 remoteManagerImpl.h.updateReporterTable(meetingSelected.getId());
-                remoteManagerImpl.h.updateUserSharedComboBox(meetingId);
+                remoteManagerImpl.h.updateUserSharedComboBox(meetingSelected.getId());
                 List<Meeting> list = meetingController.getMeetings();
                 remoteManagerImpl.h.staffUpdateMeetingTable(list);
                 List<User> users = userController.getUsers();
@@ -1124,6 +1123,10 @@ public class GUIManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_selectReporterComboBoxActionPerformed
 
     private void deleteReporterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteReporterButtonActionPerformed
+        if (meetingSelected==null){
+            JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
+            return;
+        }
         if (meetingSelected.getUserCreateId() != GUIManagerClient.user.getId()){
             JOptionPane.showMessageDialog(rootPane, "You can not set reporter for this meeting!");
             return;
@@ -1161,6 +1164,10 @@ public class GUIManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteReporterButtonActionPerformed
 
     private void deletePermissionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePermissionButtonActionPerformed
+        if (meetingSelected==null){
+            JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
+            return;
+        }
         if (meetingSelected.getUserCreateId() != GUIManagerClient.user.getId()){
             JOptionPane.showMessageDialog(rootPane, "You can not change permission for this meeting!");
             return;
@@ -1218,8 +1225,6 @@ public class GUIManagerClient extends javax.swing.JFrame {
                         }
                     }
                     GUIManagerClient.updateTable(listHavePermission);
-                    GUIManagerClient.this.meetingText.setText("");
-                    GUIManagerClient.this.timeText.setText("");
                 }
             });
         }

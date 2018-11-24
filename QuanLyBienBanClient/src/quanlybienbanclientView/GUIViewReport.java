@@ -274,6 +274,8 @@ public class GUIViewReport extends javax.swing.JFrame {
 
         jLabel7.setText("jLabel7");
 
+        jLabel8.setForeground(new java.awt.Color(217, 30, 8));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
