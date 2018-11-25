@@ -47,7 +47,7 @@ public interface RemoteInterface extends Remote{
     public void updateReportTable(List<Report> list) throws RemoteException;
     public void updateReportContent(String content, int reportId) throws RemoteException;
     public void updatePermissionTable(List<User> list, Meeting meeting) throws RemoteException;
-    
+    public void deSelectMeeting(int meetingId) throws RemoteException;
     
     // interface for user
     public List<User> getUsers() throws RemoteException;

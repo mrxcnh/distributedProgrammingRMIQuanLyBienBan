@@ -63,6 +63,10 @@ public class GUIStaffClient extends javax.swing.JFrame {
         Object[] column = {"Id","File Uploaded", "File Type"};
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(column);
+        if(list==null){
+            GUIStaffClient.reportPartTable.setModel(model);
+            return;
+        }
         try {
             for (ReportPart rp : list ){
                 String type = "PersonTime";
@@ -210,6 +214,8 @@ public class GUIStaffClient extends javax.swing.JFrame {
         jLabel3.setText("Meeting Id");
 
         meetingIdTF.setEditable(false);
+        meetingIdTF.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        meetingIdTF.setForeground(new java.awt.Color(231, 29, 9));
 
         meetingTitleTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -472,6 +478,10 @@ public class GUIStaffClient extends javax.swing.JFrame {
     }//GEN-LAST:event_meetingTableMousePressed
 
     private void chooseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseButtonActionPerformed
+        if (meetingSelected == null){
+            JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
+            return;
+        }
         JFileChooser jfc = new JFileChooser();
         jfc.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = jfc.showOpenDialog(this);
@@ -504,12 +514,11 @@ public class GUIStaffClient extends javax.swing.JFrame {
 
     private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
         final int PERSONCONTENT=0, CONTENTTIME=1, TRANSCRIPT=2;
-        if (GUIStaffClient.meetingTable.getSelectedRow() == -1){
+        if (meetingSelected == null){
             JOptionPane.showMessageDialog(rootPane, "Please choose a meeting first!");
             return;
         }
-        int row = GUIStaffClient.meetingTable.getSelectedRow();
-        int meetingId = Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3));
+        int meetingId = meetingSelected.getId();
         Meeting meeting = meetingController.getMeeting(meetingId);
         String permission = permissionController.getPermission(GUIStaffClient.user, meeting);
         if ("u".equals(permission)){
@@ -558,9 +567,9 @@ public class GUIStaffClient extends javax.swing.JFrame {
                         this.jTextArea1.setText("");
                         this.fileNameTextField.setText("");
                         this.buttonGroup1.clearSelection();
-                        List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
-                        List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
-                        List<ReportPart> listReportPartTr = reportPartController.getReportPartIds(2, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
+                        List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, meetingId);
+                        List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, meetingId);
+                        List<ReportPart> listReportPartTr = reportPartController.getReportPartIds(2, meetingId);
                         List<ReportPart> listAllReportPart = new ArrayList<>(listReportPartPC);
                         listAllReportPart.addAll(listReportPartCT);
                         listAllReportPart.addAll(listReportPartTr);
@@ -584,13 +593,13 @@ public class GUIStaffClient extends javax.swing.JFrame {
                     if (!trans.isEmpty()){
                         JOptionPane.showMessageDialog(rootPane, "Already have a transcript! Remove it first!");
                         try {
-                                remoteStaffImpl.h.updateStatus(meetingId, 0);
-                                this.jTextArea1.setText("");
-                                this.fileNameTextField.setText("");
-                                this.buttonGroup1.clearSelection();
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            remoteStaffImpl.h.updateStatus(meetingId, 0);
+                            this.jTextArea1.setText("");
+                            this.fileNameTextField.setText("");
+                            this.buttonGroup1.clearSelection();
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(GUIStaffClient.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         return;
                     }
                     else {
@@ -606,9 +615,9 @@ public class GUIStaffClient extends javax.swing.JFrame {
                             this.jTextArea1.setText("");
                             this.fileNameTextField.setText("");
                             this.buttonGroup1.clearSelection();
-                            List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
-                            List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
-                            List<ReportPart> listReportPartTr = reportPartController.getReportPartIds(2, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
+                            List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, meetingId);
+                            List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, meetingId);
+                            List<ReportPart> listReportPartTr = reportPartController.getReportPartIds(2, meetingId);
                             List<ReportPart> listAllReportPart = new ArrayList<>(listReportPartPC);
                             listAllReportPart.addAll(listReportPartCT);
                             listAllReportPart.addAll(listReportPartTr);
@@ -633,9 +642,9 @@ public class GUIStaffClient extends javax.swing.JFrame {
                 }
             }
 
-            List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
-            List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
-            List<ReportPart> listReportPartTr = reportPartController.getReportPartIds(2, Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3)));
+            List<ReportPart> listReportPartPC = reportPartController.getReportPartIds(0, meetingId);
+            List<ReportPart> listReportPartCT = reportPartController.getReportPartIds(1, meetingId);
+            List<ReportPart> listReportPartTr = reportPartController.getReportPartIds(2, meetingId);
             List<ReportPart> listAllReportPart = new ArrayList<>(listReportPartPC);
             listAllReportPart.addAll(listReportPartTr);
             listAllReportPart.addAll(listReportPartCT);
@@ -714,12 +723,11 @@ public class GUIStaffClient extends javax.swing.JFrame {
 
     private void deleteUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteUploadButtonActionPerformed
         int row = GUIStaffClient.reportPartTable.getSelectedRow();
-        int meetingRow = GUIStaffClient.meetingTable.getSelectedRow();
-        if(meetingRow == -1){
+        if(meetingSelected == null){
             JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
             return;
         }
-        int meetingId = Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(meetingRow, 0).toString().substring(3));
+        int meetingId = meetingSelected.getId();
         if(row == -1){
             JOptionPane.showMessageDialog(rootPane, "Choose a report part file first!");
         }
@@ -823,6 +831,9 @@ public class GUIStaffClient extends javax.swing.JFrame {
         public void updateReportPartTable(List<ReportPart> list, int meetingId, String userUpload) throws RemoteException {
             SwingUtilities.invokeLater(new Runnable(){
                 public void run(){
+                    if (meetingSelected==null){
+                        return;
+                    }
                     if(GUIStaffClient.this.meetingSelected.getId() == meetingId){
                         GUIStaffClient.updateReportPartTable(list);
                         GUIStaffClient.this.filePreviewTextArea.setText("");
@@ -862,6 +873,22 @@ public class GUIStaffClient extends javax.swing.JFrame {
                         else{
                             GUIStaffClient.this.jLabel9.setText("");
                         }
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void deSelectMeeting(int meetingId) throws RemoteException {
+            SwingUtilities.invokeLater(new Runnable(){
+                public void run(){
+                    if (GUIStaffClient.this.meetingSelected== null){
+                        return;
+                    }
+                    if(GUIStaffClient.this.meetingSelected.getId() == meetingId){
+                        GUIStaffClient.this.meetingSelected = null;
+                        GUIStaffClient.this.meetingIdTF.setText("");
+                        GUIStaffClient.this.meetingTitleTF.setText("");
                     }
                 }
             });

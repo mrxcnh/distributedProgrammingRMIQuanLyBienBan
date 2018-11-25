@@ -173,6 +173,17 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface {
         staffClients.removeElement(rs);
     }
     @Override
+    public void deSelectMeeting(int meetingId) throws RemoteException{
+        for (int i = 0; i < staffClients.size() ; i++){
+            RemoteStaffInterface rs = (RemoteStaffInterface)staffClients.elementAt(i);
+            try{
+                rs.deSelectMeeting(meetingId);
+            }catch(RemoteException e){
+                removeRemoteStaffInterface(rs);
+            }
+        }
+    }
+    @Override
     public void staffUpdateMeetingTable(List<Meeting> list) throws RemoteException{
         for (int i = 0; i < staffClients.size() ; i++){
             RemoteStaffInterface rs = (RemoteStaffInterface)staffClients.elementAt(i);

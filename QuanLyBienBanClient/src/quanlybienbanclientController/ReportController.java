@@ -128,7 +128,7 @@ public class ReportController {
         doc = HWPFTest.replaceText(doc, "DAY_MEETING", dayMs[2]);
         doc = HWPFTest.replaceText(doc, "MONTH_MEETING", dayMs[1]);
         doc = HWPFTest.replaceText(doc, "YEAR_MEETING", dayMs[0]);
-        doc = HWPFTest.replaceText(doc, "REPORT_NAME", report.getReportName());
+        doc = HWPFTest.replaceText(doc, "REPORT_NAME", meeting.getTitle());
         doc = HWPFTest.replaceText(doc, "REPORT_CONTENT", content);
         doc = HWPFTest.replaceText(doc, "SECRETARY", report.getAuthors());
 

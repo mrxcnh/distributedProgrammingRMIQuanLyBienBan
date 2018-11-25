@@ -944,6 +944,8 @@ public class GUIManagerClient extends javax.swing.JFrame {
                     try {
                         remoteManagerImpl.h.updateMeetingTable(list);
                         remoteManagerImpl.h.staffUpdateMeetingTable(list);
+                        remoteManagerImpl.h.staffUpdateReportPartTable(null, delmeeting.getId(), null);
+                        remoteManagerImpl.h.deSelectMeeting(delmeeting.getId());
                     } catch (RemoteException ex) {
                         Logger.getLogger("Khong update duoc table!");
                     }
@@ -1151,6 +1153,8 @@ public class GUIManagerClient extends javax.swing.JFrame {
                     remoteManagerImpl.h.updateUserSharedComboBox(meetingSelected.getId());
                     List<Meeting> list = meetingController.getMeetings();
                     remoteManagerImpl.h.staffUpdateMeetingTable(list);
+                    remoteManagerImpl.h.staffUpdateReportPartTable(null, meetingSelected.getId(), null);
+                    remoteManagerImpl.h.deSelectMeeting(meetingSelected.getId());
                     List<User> users = userController.getUsers();
                     remoteManagerImpl.h.updatePermissionTable(users, meetingSelected);
                     remoteManagerImpl.h.managerUpdateStatus(1);
@@ -1190,6 +1194,8 @@ public class GUIManagerClient extends javax.swing.JFrame {
                         remoteManagerImpl.h.updateMeetingTable(listm);
                         remoteManagerImpl.h.updateUserSharedComboBox(meetingSelected.getId());
                         remoteManagerImpl.h.staffUpdateMeetingTable(listm);
+                        remoteManagerImpl.h.staffUpdateReportPartTable(null, meetingSelected.getId(), null);
+                        remoteManagerImpl.h.deSelectMeeting(meetingSelected.getId());
                         remoteManagerImpl.h.managerUpdateStatus(1);
                     } catch (RemoteException ex) {
                         Logger.getLogger("Can not update Permission table!");
