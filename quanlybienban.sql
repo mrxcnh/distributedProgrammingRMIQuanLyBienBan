@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 23, 2018 at 10:17 AM
+-- Generation Time: Nov 25, 2018 at 12:25 PM
 -- Server version: 5.7.24-0ubuntu0.18.04.1
 -- PHP Version: 7.2.10-0ubuntu0.18.04.1
 
@@ -41,15 +41,9 @@ CREATE TABLE `meetings` (
 --
 
 INSERT INTO `meetings` (`id`, `userCreateId`, `meetingTitle`, `meetingDate`, `timeStart`) VALUES
-(1, 2, 'Meeting ve ABC', '2018-11-21', '09:00:00'),
+(1, 2, 'Meeting1', '2018-11-21', '09:00:00'),
 (3, 2, 'Hop CDE', '2018-11-13', '08:00:00'),
-(8, 2, 'meeting 8', '2018-11-14', '18:00:00'),
-(14, 2, 'meeting 15', '2018-11-14', '19:00:00'),
-(16, 2, 'meeting 17', '2018-11-14', '15:00:00'),
-(17, 2, 'Meeting 18', '2018-11-14', '13:00:00'),
-(18, 2, 'Meeting ve ABC', '2018-11-21', '09:00:00'),
-(19, 2, 'Hop ve Mid term', '2018-11-22', '10:00:00'),
-(20, 8, 'Hop ve aaaa', '2018-11-14', '08:00:00');
+(18, 2, 'Hop CDE', '2018-11-13', '08:00:00');
 
 -- --------------------------------------------------------
 
@@ -86,9 +80,9 @@ INSERT INTO `reportparts` (`id`, `meetingId`, `fileName`, `type`, `reportPartCon
 (35, 1, 'PTver1.txt', 0, 'Thanh[00:01:30~00:02:20]\nLong[00:01:30~00:02:20]\n\nCanh[00:01:25~00:01:50]\n\nHoang[00:00:59~00:01:16]\n'),
 (39, 1, 'CTver1.txt', 1, '123dascascsacascsacklsmcalkcdscaml[00:01:30~00:02:20]\n\nascamdklsclk124123r233rkml[00:01:30~00:02:20]\n\ncsclakmsdaklmmdksmclaksmdcasdl[00:01:25~00:01:50]\n\ncsakclamckdalmcsd[00:00:59~00:01:16]\n'),
 (40, 3, 'PTver1.txt', 0, 'Thanh[00:01:30~00:02:20]\nLong[00:01:30~00:02:20]\n\nCanh[00:01:25~00:01:50]\n\nHoang[00:00:59~00:01:16]\n'),
-(41, 3, 'CTver1.txt', 1, '123dascascsacascsacklsmcalkcdscaml[00:01:30~00:02:20]\n\nascamdklsclk124123r233rkml[00:01:30~00:02:20]\n\ncsclakmsdaklmmdksmclaksmdcasdl[00:01:25~00:01:50]\n\ncsakclamckdalmcsd[00:00:59~00:01:16]\n'),
-(42, 3, 'Transcript.txt', 2, '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n'),
-(44, 8, 'Transcript.txt', 2, '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n');
+(52, 3, 'CTver1.txt', 1, '123dascascsacascsacklsmcalkcdscaml[00:01:30~00:02:20]\n\nascamdklsclk124123r233rkml[00:01:30~00:02:20]\n\ncsclakmsdaklmmdksmclaksmdcasdl[00:01:25~00:01:50]\n\ncsakclamckdalmcsd[00:00:59~00:01:16]\n'),
+(65, 1, 'PTver1.txt', 0, 'Thanh[00:01:30~00:02:20]\nLong[00:01:30~00:02:20]\n\nCanh[00:01:25~00:01:50]\n\nHoang[00:00:59~00:01:16]\n'),
+(70, 3, 'Transcript.txt', 2, '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n');
 
 -- --------------------------------------------------------
 
@@ -116,16 +110,17 @@ INSERT INTO `reports` (`id`, `meetingId`, `reportName`, `reportContent`, `timeCr
 (93, 1, 'Mid1Report', '[00:00:59~00:01:16]Hoang-Chao moi nguoi\n[00:01:25~00:01:50]Canh-Chao moi nguoi\n[00:01:30~00:02:20]Thanh-Chao moi nguoi\n[00:01:30~00:02:20]Long-Chao moi nguoi', '09:07:02', 'thanhdovan'),
 (94, 1, 'Mid1Report', '[00:00:59~00:01:16]Hoang-Chao moi nguoi\n[00:01:25~00:01:50]Canh-Chao moi nguoi\n[00:01:30~00:02:20]Thanh-Chao moi nguoi\n[00:01:30~00:02:20]Long-Chao moi nguoi', '09:07:39', 'longlengoc'),
 (95, 1, 'Mid1Report', '[00:00:59~00:01:16]Hoang-Chao moi nguoi\n[00:01:25~00:01:50]Canh-Chao moi nguoi\n[00:01:30~00:02:20]Thanh-Chao moi nguoi\n[00:01:30~00:02:20]Long-Chao moi nguoimmm', '09:08:03', 'longlengoc'),
-(96, 3, 'Hop CDETranscript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n', '09:32:35', 'thanhdovan'),
-(97, 8, 'meeting 8Transcript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n', '2018/11/23 09:40:34', 'thanhdovan'),
-(98, 8, 'meeting 8Transcript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsaaa', '2018/11/23 09:40:54', 'thanhdovan'),
 (99, 1, '', '[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n[00:01:30~00:02:20]Long-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n', '2018/11/23 09:41:43', 'thanhdovan'),
-(100, 8, 'meeting 8Transcript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsdaylatsua', '2018/11/23 09:48:48', 'thanhdovan'),
 (101, 1, '', '[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n[00:01:30~00:02:20]Long-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r23', '2018/11/23 09:49:58', 'thanhdovan'),
 (102, 3, 'MID3Report', '[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n[00:01:30~00:02:20]Long-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n', '2018/11/23 09:55:42', 'thanhdovan'),
 (103, 3, 'Hop CDETranscript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n', '2018/11/23 09:56:31', 'thanhdovan'),
-(104, 8, 'meeting 8Transcript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n', '2018/11/23 09:59:00', 'thanhdovan'),
-(105, 8, 'meeting 8Transcript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n', '2018/11/23 10:00:33', 'thanhdovan');
+(106, 1, '', '[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n[00:01:30~00:02:20]Long-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r23111', '2018/11/23 16:45:24', 'thanhdovan'),
+(107, 1, '', '[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n[00:01:30~00:02:20]Long-123', '2018/11/24 09:55:55', 'longlengoc'),
+(108, 1, 'ABC', '[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n[00:01:30~00:02:20]Long-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n', '2018/11/24 10:02:34', 'longlengoc'),
+(109, 3, 'MID3REPORT', '[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n[00:01:30~00:02:20]Long-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r233rkml\n', '2018/11/24 14:56:26', 'thanhdovan'),
+(121, 1, '', '[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscamlascaalascdsacmdklsclk124123r233rkml\n[00:01:30~00:02:20]Long-123dascascsacascsacklsmcalkcdscamlascamdklsclk124123r23111', '2018/11/24 21:08:43', 'thanhdovan'),
+(124, 3, 'Hop CDETranscript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\r\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\r\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\r\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\r\n\r\n', '2018/11/25 12:18:59', 'thanhdovan'),
+(125, 3, 'Hop CDETranscript', '[00:01:30~00:02:20]Thanh-123dascascsacascsacklsmcalkcdscaml\n[00:01:30~00:02:20]Long-ascamdklsclk124123r233rkml\n[00:01:25~00:01:50]Canh-csclakmsdaklmmdksmclaksmdcasdl\n[00:00:59~00:01:16]Hoang-csakclamckdalmcsd\n\n', '2018/11/25 12:19:44', 'longlengoc');
 
 -- --------------------------------------------------------
 
@@ -147,20 +142,13 @@ CREATE TABLE `userpermission` (
 INSERT INTO `userpermission` (`id`, `userId`, `meetingId`, `permission`) VALUES
 (146, 1, 1, 'u'),
 (149, 4, 1, 'u'),
-(154, 10, 17, 'u'),
-(156, 11, 17, 'u'),
-(158, 1, 3, 'u'),
-(163, 6, 8, 'r'),
-(164, 6, 14, 'r'),
-(165, 6, 16, 'r'),
 (167, 6, 1, 'r'),
-(170, 8, 14, 'r'),
-(173, 8, 8, 'r'),
-(174, 1, 8, 'u'),
-(175, 10, 8, 'u'),
-(176, 4, 3, 'u'),
-(177, 4, 8, 'u'),
-(178, 1, 19, 'u');
+(179, 8, 1, 'r'),
+(200, 6, 3, 'r'),
+(208, 4, 3, 'u'),
+(217, 10, 3, 'u'),
+(236, 1, 3, 'u'),
+(238, 1, 18, 'u');
 
 -- --------------------------------------------------------
 
@@ -188,9 +176,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `fullname`, `position`) VALUE
 (7, 'admin1', '81dc9bdb52d04dc20036dbd8313ed055', 'admin1', 'admin'),
 (8, 'manager', '81dc9bdb52d04dc20036dbd8313ed055', 'manager', 'manager'),
 (9, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 'admin', 'admin'),
-(10, 'staff1', '81dc9bdb52d04dc20036dbd8313ed055', 'staff1', 'staff'),
-(11, 'staff2', '81dc9bdb52d04dc20036dbd8313ed055', 'staff2', 'staff'),
-(12, 'admin2', '81dc9bdb52d04dc20036dbd8313ed055', 'admin', 'admin');
+(10, 'staff1', '81dc9bdb52d04dc20036dbd8313ed055', 'staff66666', 'staff'),
+(11, 'staff2', '81dc9bdb52d04dc20036dbd8313ed055', 'staff2', 'staff');
 
 --
 -- Indexes for dumped tables
@@ -247,31 +234,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `meetings`
 --
 ALTER TABLE `meetings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `peopleeditreport`
 --
 ALTER TABLE `peopleeditreport`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reportparts`
 --
 ALTER TABLE `reportparts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `userpermission`
 --
 ALTER TABLE `userpermission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=179;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=239;
 
 --
 -- AUTO_INCREMENT for table `users`

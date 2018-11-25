@@ -681,12 +681,12 @@ public class GUIStaffClient extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void generateReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateReportButtonActionPerformed
-        int row = GUIStaffClient.meetingTable.getSelectedRow();
-        if (row == -1){
+        if (meetingSelected==null){
             JOptionPane.showMessageDialog(rootPane, "Choose a meeting first!");
+            return;
         }
         else{
-            int meetingId = Integer.parseInt(GUIStaffClient.meetingTable.getValueAt(row, 0).toString().substring(3));
+            int meetingId = meetingSelected.getId();
             Meeting meeting = meetingController.getMeeting(meetingId);
             String permission = permissionController.getPermission(GUIStaffClient.user, meeting);
             if ("u".equals(permission)){
